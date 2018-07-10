@@ -30,23 +30,13 @@ namespace RyujinxAutoUpdate
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Icon = new Icon("Images/icon.ico");
-            if (!Directory.Exists(RyujinxDownloadPath))
-            {
-                Directory.CreateDirectory(RyujinxDownloadPath);
-            }
+            if (!Directory.Exists(RyujinxDownloadPath)) Directory.CreateDirectory(RyujinxDownloadPath);
         }
 
         private void DownloadUpdateRyujinxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("Do you want to Install / Update Ryujinx?", "Are you sure?", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                InstallOrUpdateRyujinx();
-            }
-            else if (dialogResult == DialogResult.No)
-            {
-                return;
-            }
+            if (dialogResult == DialogResult.Yes) InstallOrUpdateRyujinx();
         }
 
         private void RunRyujinx(string args)
@@ -125,7 +115,15 @@ namespace RyujinxAutoUpdate
             DialogResult dialogResult = MessageBox.Show("Do you want to install OpenAL?", "Are you sure?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                InstallOpenAL(true);
+                if (InstallOpenAL(true) == 0)
+                {
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
+                    if (RestartApp == DialogResult.OK)
+                    {
+                        Application.Restart();
+                    }
+                }
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -139,7 +137,15 @@ namespace RyujinxAutoUpdate
                 "(Note: Make sure to check \"Use git from the windows command prompt\"!)", "Are you sure?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                InstallGit(true);
+                if (InstallGit(true) == 0)
+                {
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
+                    if (RestartApp == DialogResult.OK)
+                    {
+                        Application.Restart();
+                    }
+                }
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -152,7 +158,15 @@ namespace RyujinxAutoUpdate
             DialogResult dialogResult = MessageBox.Show("Do you want to install the .Net SDK?", "Are you sure?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                InstallDotNet(true);
+                if (InstallDotNet(true) == 0)
+                {
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
+                    if (RestartApp == DialogResult.OK)
+                    {
+                        Application.Restart();
+                    }
+                }
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -185,7 +199,7 @@ namespace RyujinxAutoUpdate
         private void BuildRyujinx(Process proc)
         {
             proc.StartInfo.FileName = "dotnet";
-            proc.StartInfo.Arguments = "build -c Release " + RyujinxDownloadPath + "\\Ryujinx";
+            proc.StartInfo.Arguments = "build -c Release \"" + RyujinxDownloadPath + "\\Ryujinx\"";
 
             // Build Ryujinx
             toolStrip1.Items[0].Text = "Building Ryujinx...";
@@ -220,12 +234,12 @@ namespace RyujinxAutoUpdate
         {
             Process CurrentProc = new Process();
 
-            CurrentProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            CurrentProc.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
 
             if (IsDirectoryEmpty(RyujinxDownloadPath))
             {
                 CurrentProc.StartInfo.FileName = "git";
-                CurrentProc.StartInfo.Arguments = "clone https://github.com/gdkchan/Ryujinx.git " + RyujinxDownloadPath;
+                CurrentProc.StartInfo.Arguments = "-C \"" + RyujinxDownloadPath + "\" clone https://github.com/gdkchan/Ryujinx.git ./";
 
                 // Clone the repository
                 toolStrip1.Items[0].Text = "Cloning the Git Repository...";
@@ -264,7 +278,7 @@ namespace RyujinxAutoUpdate
             else
             {
                 CurrentProc.StartInfo.FileName = "git";
-                CurrentProc.StartInfo.Arguments = "-C " + RyujinxDownloadPath + " pull origin master ";
+                CurrentProc.StartInfo.Arguments = "-C \"" + RyujinxDownloadPath + "\" pull origin master ";
 
                 // Pull the repository
                 toolStrip1.Items[0].Text = "Pulling the Git Repository...";
