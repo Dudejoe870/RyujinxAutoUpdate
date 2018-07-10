@@ -148,6 +148,7 @@ namespace RyujinxAutoUpdate
         }
 
         private void InstallNetSDKToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             DialogResult dialogResult = MessageBox.Show("Do you want to install the .Net SDK?", "Are you sure?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
