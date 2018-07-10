@@ -46,7 +46,7 @@ namespace RyujinxAutoUpdate
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "dotnet",
-                    Arguments = "run --project " + RyujinxDownloadPath + "\\Ryujinx -c Release -- " + args,
+                    Arguments = "run --project \"" + RyujinxDownloadPath + "\\Ryujinx\" -c Release -- \"" + args + "\"",
                     UseShellExecute = false
                 }
             };
