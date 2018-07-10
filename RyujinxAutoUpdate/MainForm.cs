@@ -55,7 +55,7 @@ namespace RyujinxAutoUpdate
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "dotnet.exe",
+                    FileName = "dotnet",
                     Arguments = "run --project " + RyujinxDownloadPath + "\\Ryujinx -c Release -- " + args,
                     UseShellExecute = false
                 }
@@ -184,7 +184,7 @@ namespace RyujinxAutoUpdate
 
         private void BuildRyujinx(Process proc)
         {
-            proc.StartInfo.FileName = "dotnet.exe";
+            proc.StartInfo.FileName = "dotnet";
             proc.StartInfo.Arguments = "build -c Release " + RyujinxDownloadPath + "\\Ryujinx";
 
             // Build Ryujinx
@@ -224,7 +224,7 @@ namespace RyujinxAutoUpdate
 
             if (IsDirectoryEmpty(RyujinxDownloadPath))
             {
-                CurrentProc.StartInfo.FileName = "git.exe";
+                CurrentProc.StartInfo.FileName = "git";
                 CurrentProc.StartInfo.Arguments = "clone https://github.com/gdkchan/Ryujinx.git " + RyujinxDownloadPath;
 
                 // Clone the repository
@@ -263,7 +263,7 @@ namespace RyujinxAutoUpdate
             }
             else
             {
-                CurrentProc.StartInfo.FileName = "git.exe";
+                CurrentProc.StartInfo.FileName = "git";
                 CurrentProc.StartInfo.Arguments = "-C " + RyujinxDownloadPath + " pull origin master ";
 
                 // Pull the repository
