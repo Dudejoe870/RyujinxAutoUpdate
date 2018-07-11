@@ -1,19 +1,10 @@
-﻿using Ionic.Zip;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Security.Permissions;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RyujinxAutoUpdate
@@ -117,11 +108,11 @@ namespace RyujinxAutoUpdate
             {
                 if (InstallOpenAL(true) == 0)
                 {
-                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Quit (And Manually) Restart the Application now?\n" +
                     "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
                     if (RestartApp == DialogResult.OK)
                     {
-                        Application.Restart();
+                        Application.Exit();
                     }
                 }
             }
@@ -139,11 +130,11 @@ namespace RyujinxAutoUpdate
             {
                 if (InstallGit(true) == 0)
                 {
-                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Quit (And Manually) Restart the Application now?\n" +
                     "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
                     if (RestartApp == DialogResult.OK)
                     {
-                        Application.Restart();
+                        Application.Exit();
                     }
                 }
             }
@@ -160,11 +151,11 @@ namespace RyujinxAutoUpdate
             {
                 if (InstallDotNet(true) == 0)
                 {
-                    DialogResult RestartApp = MessageBox.Show("Do you want to Restart the Application now?\n" +
+                    DialogResult RestartApp = MessageBox.Show("Do you want to Quit (And Manually) Restart the Application now?\n" +
                     "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
                     if (RestartApp == DialogResult.OK)
                     {
-                        Application.Restart();
+                        Application.Exit();
                     }
                 }
             }
@@ -188,6 +179,12 @@ namespace RyujinxAutoUpdate
                 //InstallGit(false);
                 if (InstallDotNet(false) != 0) return;
                 //InstallDotNet(false);
+                DialogResult RestartApp = MessageBox.Show("Do you want to Quit (And Manually) Restart the Application now?\n" +
+                    "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
+                if (RestartApp == DialogResult.OK)
+                {
+                    Application.Exit();
+                }
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -208,7 +205,7 @@ namespace RyujinxAutoUpdate
             {
                 proc.Start();
             }
-            catch (FileNotFoundException) // Make sure they have the .Net SDK Installed!
+            catch (Exception) // Make sure they have the .Net SDK Installed!
             {
                 DialogResult dialogResult = MessageBox.Show("You need the .Net SDK installed to use this function!", "Error", MessageBoxButtons.OK);
                 if (DialogResult == DialogResult.OK)
@@ -248,7 +245,7 @@ namespace RyujinxAutoUpdate
                 {
                     CurrentProc.Start();
                 }
-                catch (FileNotFoundException) // Make sure they have Git Installed!
+                catch (Exception) // Make sure they have Git Installed!
                 {
                     DialogResult dialogResult = MessageBox.Show("You need Git installed to use this function!\n" +
                         "(Did you check \"Use git from the windows command prompt\"?)", "Error", MessageBoxButtons.OK);
@@ -287,7 +284,7 @@ namespace RyujinxAutoUpdate
                 {
                     CurrentProc.Start();
                 }
-                catch (FileNotFoundException) // Make sure they have Git Installed!
+                catch (Exception) // Make sure they have Git Installed!
                 {
                     DialogResult dialogResult = MessageBox.Show("You need Git installed to use this function!\n" +
                         "(Did you check \"Use git from the windows command prompt\"?)", "Error", MessageBoxButtons.OK);
@@ -313,6 +310,8 @@ namespace RyujinxAutoUpdate
 
                 toolStrip1.Items[0].Text = "";
             }
+
+            return;
         }
 
         private int InstallGit(bool ChangeInfoToolStrip)
@@ -364,7 +363,7 @@ namespace RyujinxAutoUpdate
 
             // Extract the Zip
             if (ChangeInfoToolStrip) toolStrip1.Items[0].Text = "Extracting the Zip...";
-            Extract(ZipFile, ZipDir);
+            System.IO.Compression.ZipFile.ExtractToDirectory(ZipFile, ZipDir);
 
             string ExeFile = ZipDir + "\\OpenAL11CoreSDK.exe";
 
@@ -411,17 +410,6 @@ namespace RyujinxAutoUpdate
         private bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
-        }
-
-        private void Extract(string zipToUnpack, string unpackDirectory)
-        {
-            using (ZipFile zip = ZipFile.Read(zipToUnpack))
-            {
-                foreach (ZipEntry entry in zip)
-                {
-                    entry.Extract(unpackDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
         }
     }
 }
