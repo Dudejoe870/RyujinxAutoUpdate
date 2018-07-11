@@ -22,6 +22,7 @@ namespace RyujinxAutoUpdate
         {
             this.Icon = new Icon("Images/icon.ico");
             if (!Directory.Exists(RyujinxDownloadPath)) Directory.CreateDirectory(RyujinxDownloadPath);
+            Settings.Init();
         }
 
         private void DownloadUpdateRyujinxToolStripMenuItem_Click(object sender, EventArgs e)
@@ -74,24 +75,31 @@ namespace RyujinxAutoUpdate
 
         private void OpenHomebrewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
+            if (Settings.SHOULD_OPEN_DEFAULT_HOMEBREW)
             {
-                Title = "Select a NRO to open"
-            };
-
-            fileDialog.Filter = "Homebrew Game (*.nro)|*.nro";
-
-            DialogResult result = fileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                RunRyujinx(fileDialog.FileName);
-
-                fileDialog.Dispose();
+                RunRyujinx(Settings.DEFAULT_HOMEBREW_APP);
             }
-            else if (result == DialogResult.Cancel)
+            else
             {
-                fileDialog.Dispose();
-                return;
+                OpenFileDialog fileDialog = new OpenFileDialog
+                {
+                    Title = "Select a NRO to open"
+                };
+
+                fileDialog.Filter = "Homebrew Game (*.nro)|*.nro";
+
+                DialogResult result = fileDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    RunRyujinx(fileDialog.FileName);
+
+                    fileDialog.Dispose();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    fileDialog.Dispose();
+                    return;
+                }
             }
         }
 
@@ -99,6 +107,13 @@ namespace RyujinxAutoUpdate
         {
             AboutForm about = new AboutForm();
             about.Show();
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm settings = new SettingsForm();
+            settings.Show();
+            Console.WriteLine(Settings.DEFAULT_HOMEBREW_APP);
         }
 
         private void InstallOpenALToolStripMenuItem_Click(object sender, EventArgs e)
@@ -299,7 +314,7 @@ namespace RyujinxAutoUpdate
 
                 if (CurrentProc.ExitCode != 0) // Make sure nothing went wrong!
                 {
-                    toolStrip1.Items[0].Text = "Something went wrong!  Git Exit Code: " + CurrentProc.ExitCode;
+                    toolStrip1.Items[0].Text = "Something went wrong!  Git Pull Exit Code: " + CurrentProc.ExitCode;
                     CurrentProc.Dispose();
                     return;
                 }
