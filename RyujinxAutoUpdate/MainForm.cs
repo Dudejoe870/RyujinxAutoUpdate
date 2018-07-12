@@ -59,8 +59,11 @@ namespace RyujinxAutoUpdate
             // Run Ryujinx
             toolStrip1.Items[0].Text = "Running Ryujinx...";
             Ryujinx.Start();
-            Ryujinx.BeginOutputReadLine();
-            Ryujinx.BeginErrorReadLine();
+            if (Settings.WRITE_RYUJINX_LOG)
+            {
+                Ryujinx.BeginOutputReadLine();
+                Ryujinx.BeginErrorReadLine();
+            }
 
             Ryujinx.WaitForExit();
 
