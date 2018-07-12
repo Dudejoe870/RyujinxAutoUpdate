@@ -10,20 +10,19 @@ namespace RyujinxAutoUpdate
 {
     class GitParser
     {
-        private static Process Git = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "git",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            }
-        };
-
         public static string[] GitBranches(string ProjectPath)
         {
+            Process Git = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "git",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                }
+            };
             Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" fetch";
             Git.Start();
 
@@ -59,6 +58,8 @@ namespace RyujinxAutoUpdate
                 Console.WriteLine("Uh oh!  Git threw an error!");
                 return null;
             }
+
+            Git.Dispose();
 
             Output.RemoveAt(0);
 
