@@ -30,14 +30,17 @@ namespace RyujinxAutoUpdate
             WriteBuildLogCheck.Checked = Settings.WRITE_BUILD_LOG;
             DefaultAppPath.Text = Settings.DEFAULT_HOMEBREW_APP;
 
-            foreach (string s in GitParser.GitBranches(MainForm.RyujinxDownloadPath))
+            if (GitParser.GitBranches(MainForm.RyujinxDownloadPath) != null)
             {
-                if (s != "master")
+                foreach (string s in GitParser.GitBranches(MainForm.RyujinxDownloadPath))
                 {
-                    listView1.Items.Add(new ListViewItem
+                    if (s != "master")
                     {
-                        Text = s
-                    });
+                        listView1.Items.Add(new ListViewItem
+                        {
+                            Text = s
+                        });
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,60 +13,75 @@ namespace RyujinxAutoUpdate
     {
         public static string[] GitBranches(string ProjectPath)
         {
-            Process Git = new Process
+            if (!IsDirectoryEmpty(ProjectPath))
             {
-                StartInfo = new ProcessStartInfo
+                Process Git = new Process
                 {
-                    FileName = "git",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "git",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true
+                    }
+                };
+
+                Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" fetch";
+                Git.Start();
+
+                Git.WaitForExit();
+
+                if (Git.ExitCode != 0)
+                {
+                    Console.WriteLine("Uh oh!  Git threw an error!");
+                    return null;
                 }
-            };
-            Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" fetch";
-            Git.Start();
 
-            Git.WaitForExit();
+                Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" branch -r";
+                List<string> Output = new List<string>();
 
-            if (Git.ExitCode != 0)
+                string[] Result;
+
+                Git.OutputDataReceived += (s, e) =>
+                {
+                    if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data.Split('/')[1]);
+                };
+
+                Git.ErrorDataReceived += (s, e) =>
+                {
+                    if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data.Split('/')[1]);
+                };
+
+                Git.Start();
+                Git.BeginOutputReadLine();
+                Git.BeginErrorReadLine();
+
+                Git.WaitForExit();
+
+                if (Git.ExitCode != 0)
+                {
+                    Console.WriteLine("Uh oh!  Git threw an error!");
+                    return null;
+                }
+
+                Git.Dispose();
+
+                Output.RemoveAt(0);
+
+                Result = Output.ToArray();
+
+                return Result;
+            }
+            else
             {
-                Console.WriteLine("Uh oh!  Git threw an error!");
                 return null;
             }
+        }
 
-            Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" branch -r";
-            List<string> Output = new List<string>();
-
-            string[] Result;
-
-            Git.OutputDataReceived += (s, e) => {
-                if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data.Split('/')[1]);
-            };
-
-            Git.ErrorDataReceived  += (s, e) => {
-                if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data.Split('/')[1]);
-            };
-
-            Git.Start();
-            Git.BeginOutputReadLine();
-            Git.BeginErrorReadLine();
-
-            Git.WaitForExit();
-
-            if (Git.ExitCode != 0)
-            {
-                Console.WriteLine("Uh oh!  Git threw an error!");
-                return null;
-            }
-
-            Git.Dispose();
-
-            Output.RemoveAt(0);
-
-            Result = Output.ToArray();
-
-            return Result;
+        private static bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
     }
 }
