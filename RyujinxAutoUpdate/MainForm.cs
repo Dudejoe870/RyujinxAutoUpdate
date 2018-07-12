@@ -12,6 +12,8 @@ namespace RyujinxAutoUpdate
     public partial class MainForm : Form
     {
         private string RyujinxDownloadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx";
+        private string BuildLogFilePath    = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Build.log";
+        private string RyujinxLogFilePath  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx.log";
 
         public MainForm()
         {
@@ -37,18 +39,34 @@ namespace RyujinxAutoUpdate
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "dotnet",
-                    Arguments = "run --project \"" + RyujinxDownloadPath + "\\Ryujinx\" -c Release -- \"" + args + "\"",
-                    UseShellExecute = false
+                    FileName               = "dotnet",
+                    Arguments              = "run --project \"" + RyujinxDownloadPath + "\\Ryujinx\" -c Release -- \"" + args + "\"",
+                    UseShellExecute        = false,
+                    CreateNoWindow         = !Settings.SHOW_RYUJINX_CONSOLE,
+                    RedirectStandardError  =  Settings.WRITE_RYUJINX_LOG,
+                    RedirectStandardOutput =  Settings.WRITE_RYUJINX_LOG
                 }
             };
+
+            string LOG = "";
+
+            if (Settings.WRITE_RYUJINX_LOG)
+            {
+                Ryujinx.OutputDataReceived += (s, e) => LOG += e.Data + '\n';
+                Ryujinx.ErrorDataReceived  += (s, e) => LOG += e.Data + '\n';
+            }
 
             // Run Ryujinx
             toolStrip1.Items[0].Text = "Running Ryujinx...";
             Ryujinx.Start();
+            Ryujinx.BeginOutputReadLine();
+            Ryujinx.BeginErrorReadLine();
 
             Ryujinx.WaitForExit();
-            toolStrip1.Items[0].Text = "";
+
+            if (Settings.WRITE_RYUJINX_LOG) using (StreamWriter sw = File.CreateText(RyujinxLogFilePath)) sw.Write(LOG);
+
+            toolStrip1.Items[0].Text = "Ryujinx Exited.";
         }
 
         private void OpenGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -212,13 +230,33 @@ namespace RyujinxAutoUpdate
         {
             proc.StartInfo.FileName = "dotnet";
             proc.StartInfo.Arguments = "build -c Release \"" + RyujinxDownloadPath + "\\Ryujinx\"";
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.CreateNoWindow = !Settings.SHOW_BUILD_CONSOLE;
+
+            proc.StartInfo.RedirectStandardError  = Settings.WRITE_BUILD_LOG;
+            proc.StartInfo.RedirectStandardOutput = Settings.WRITE_BUILD_LOG;
+
+            string LOG = "";
+
+            if (Settings.WRITE_BUILD_LOG)
+            {
+                proc.OutputDataReceived += (s, e) => LOG += e.Data + '\n';
+                proc.ErrorDataReceived  += (s, e) => LOG += e.Data + '\n';
+            }
 
             // Build Ryujinx
             toolStrip1.Items[0].Text = "Building Ryujinx...";
+            Stopwatch TimeTook = new Stopwatch();
 
             try
             {
                 proc.Start();
+                TimeTook.Start();
+                if (Settings.WRITE_BUILD_LOG)
+                {
+                    proc.BeginOutputReadLine();
+                    proc.BeginErrorReadLine();
+                }
             }
             catch (Exception) // Make sure they have the .Net SDK Installed!
             {
@@ -232,6 +270,8 @@ namespace RyujinxAutoUpdate
 
             proc.WaitForExit();
 
+            TimeTook.Stop();
+
             if (proc.ExitCode != 0) // Make sure nothing went wrong!
             {
                 toolStrip1.Items[0].Text = "Something went wrong!  Dotnet Exit Code: " + proc.ExitCode;
@@ -239,14 +279,16 @@ namespace RyujinxAutoUpdate
                 return;
             }
 
-            toolStrip1.Items[0].Text = "";
+            if (Settings.WRITE_BUILD_LOG) using (StreamWriter sw = File.CreateText(BuildLogFilePath)) sw.Write(LOG);
+
+            toolStrip1.Items[0].Text = "Ryujinx Build finished in " + ((double)(TimeTook.ElapsedMilliseconds) / 1000) + " Second(s).";
         }
 
         private void InstallOrUpdateRyujinx()
         {
             Process CurrentProc = new Process();
 
-            CurrentProc.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            CurrentProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             if (IsDirectoryEmpty(RyujinxDownloadPath))
             {
@@ -284,8 +326,6 @@ namespace RyujinxAutoUpdate
                 BuildRyujinx(CurrentProc);
 
                 CurrentProc.Dispose();
-
-                toolStrip1.Items[0].Text = "";
             }
             else
             {
@@ -322,8 +362,6 @@ namespace RyujinxAutoUpdate
                 BuildRyujinx(CurrentProc);
 
                 CurrentProc.Dispose();
-
-                toolStrip1.Items[0].Text = "";
             }
 
             return;

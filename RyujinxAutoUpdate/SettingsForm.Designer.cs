@@ -32,6 +32,11 @@
             this.Apply = new System.Windows.Forms.Button();
             this.ShouldOpenDefaultHomebrewCheck = new System.Windows.Forms.CheckBox();
             this.DefaultApp = new System.Windows.Forms.Button();
+            this.ShowRyujinxConsoleCheck = new System.Windows.Forms.CheckBox();
+            this.DefaultAppPath = new System.Windows.Forms.TextBox();
+            this.ShowBuildConsoleCheck = new System.Windows.Forms.CheckBox();
+            this.WriteBuildLogCheck = new System.Windows.Forms.CheckBox();
+            this.WriteRyujinxLogCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // Cancel
@@ -78,11 +83,69 @@
             this.DefaultApp.UseVisualStyleBackColor = true;
             this.DefaultApp.Click += new System.EventHandler(this.DefaultApp_Click);
             // 
+            // ShowRyujinxConsoleCheck
+            // 
+            this.ShowRyujinxConsoleCheck.AutoSize = true;
+            this.ShowRyujinxConsoleCheck.Location = new System.Drawing.Point(183, 12);
+            this.ShowRyujinxConsoleCheck.Name = "ShowRyujinxConsoleCheck";
+            this.ShowRyujinxConsoleCheck.Size = new System.Drawing.Size(131, 17);
+            this.ShowRyujinxConsoleCheck.TabIndex = 4;
+            this.ShowRyujinxConsoleCheck.Text = "Show Ryujinx Console";
+            this.ShowRyujinxConsoleCheck.UseVisualStyleBackColor = true;
+            this.ShowRyujinxConsoleCheck.CheckedChanged += new System.EventHandler(this.ShowRyujinxConsoleCheck_CheckedChanged);
+            // 
+            // DefaultAppPath
+            // 
+            this.DefaultAppPath.Enabled = false;
+            this.DefaultAppPath.Location = new System.Drawing.Point(12, 64);
+            this.DefaultAppPath.Name = "DefaultAppPath";
+            this.DefaultAppPath.ReadOnly = true;
+            this.DefaultAppPath.Size = new System.Drawing.Size(302, 20);
+            this.DefaultAppPath.TabIndex = 5;
+            // 
+            // ShowBuildConsoleCheck
+            // 
+            this.ShowBuildConsoleCheck.AutoSize = true;
+            this.ShowBuildConsoleCheck.Location = new System.Drawing.Point(451, 12);
+            this.ShowBuildConsoleCheck.Name = "ShowBuildConsoleCheck";
+            this.ShowBuildConsoleCheck.Size = new System.Drawing.Size(120, 17);
+            this.ShowBuildConsoleCheck.TabIndex = 6;
+            this.ShowBuildConsoleCheck.Text = "Show Build Console";
+            this.ShowBuildConsoleCheck.UseVisualStyleBackColor = true;
+            this.ShowBuildConsoleCheck.CheckedChanged += new System.EventHandler(this.ShowBuildConsoleCheck_CheckedChanged);
+            // 
+            // WriteBuildLogCheck
+            // 
+            this.WriteBuildLogCheck.AutoSize = true;
+            this.WriteBuildLogCheck.Location = new System.Drawing.Point(577, 12);
+            this.WriteBuildLogCheck.Name = "WriteBuildLogCheck";
+            this.WriteBuildLogCheck.Size = new System.Drawing.Size(114, 17);
+            this.WriteBuildLogCheck.TabIndex = 7;
+            this.WriteBuildLogCheck.Text = "Write To Build Log";
+            this.WriteBuildLogCheck.UseVisualStyleBackColor = true;
+            this.WriteBuildLogCheck.CheckedChanged += new System.EventHandler(this.WriteBuildLogCheck_CheckedChanged);
+            // 
+            // WriteRyujinxLogCheck
+            // 
+            this.WriteRyujinxLogCheck.AutoSize = true;
+            this.WriteRyujinxLogCheck.Location = new System.Drawing.Point(320, 12);
+            this.WriteRyujinxLogCheck.Name = "WriteRyujinxLogCheck";
+            this.WriteRyujinxLogCheck.Size = new System.Drawing.Size(125, 17);
+            this.WriteRyujinxLogCheck.TabIndex = 8;
+            this.WriteRyujinxLogCheck.Text = "Write To Ryujinx Log";
+            this.WriteRyujinxLogCheck.UseVisualStyleBackColor = true;
+            this.WriteRyujinxLogCheck.CheckedChanged += new System.EventHandler(this.WriteRyujinxLogCheck_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1037, 549);
+            this.Controls.Add(this.WriteRyujinxLogCheck);
+            this.Controls.Add(this.WriteBuildLogCheck);
+            this.Controls.Add(this.ShowBuildConsoleCheck);
+            this.Controls.Add(this.DefaultAppPath);
+            this.Controls.Add(this.ShowRyujinxConsoleCheck);
             this.Controls.Add(this.DefaultApp);
             this.Controls.Add(this.ShouldOpenDefaultHomebrewCheck);
             this.Controls.Add(this.Apply);
@@ -101,5 +164,10 @@
         private System.Windows.Forms.Button Apply;
         private System.Windows.Forms.CheckBox ShouldOpenDefaultHomebrewCheck;
         private System.Windows.Forms.Button DefaultApp;
+        private System.Windows.Forms.CheckBox ShowRyujinxConsoleCheck;
+        private System.Windows.Forms.TextBox DefaultAppPath;
+        private System.Windows.Forms.CheckBox ShowBuildConsoleCheck;
+        private System.Windows.Forms.CheckBox WriteBuildLogCheck;
+        private System.Windows.Forms.CheckBox WriteRyujinxLogCheck;
     }
 }

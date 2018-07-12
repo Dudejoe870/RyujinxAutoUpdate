@@ -92,14 +92,14 @@
             // OpenGameToolStripMenuItem
             // 
             this.OpenGameToolStripMenuItem.Name = "OpenGameToolStripMenuItem";
-            this.OpenGameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenGameToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.OpenGameToolStripMenuItem.Text = "Open Game";
             this.OpenGameToolStripMenuItem.Click += new System.EventHandler(this.OpenGameToolStripMenuItem_Click);
             // 
             // OpenHomebrewToolStripMenuItem
             // 
             this.OpenHomebrewToolStripMenuItem.Name = "OpenHomebrewToolStripMenuItem";
-            this.OpenHomebrewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenHomebrewToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.OpenHomebrewToolStripMenuItem.Text = "Open Homebrew";
             this.OpenHomebrewToolStripMenuItem.Click += new System.EventHandler(this.OpenHomebrewToolStripMenuItem_Click);
             // 
@@ -114,7 +114,7 @@
             // SettingsToolStripMenuItem
             // 
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.SettingsToolStripMenuItem.Text = "Settings";
             this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
             // 
@@ -176,7 +176,7 @@
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 

@@ -22,6 +22,11 @@ namespace RyujinxAutoUpdate
             this.Icon = new Icon("Images/icon.ico");
             Settings.UpdateValues();
             ShouldOpenDefaultHomebrewCheck.Checked = Settings.SHOULD_OPEN_DEFAULT_HOMEBREW;
+            ShowRyujinxConsoleCheck.Checked        = Settings.SHOW_RYUJINX_CONSOLE;
+            WriteRyujinxLogCheck.Checked           = Settings.WRITE_RYUJINX_LOG;
+            ShowBuildConsoleCheck.Checked          = Settings.SHOW_BUILD_CONSOLE;
+            WriteBuildLogCheck.Checked             = Settings.WRITE_BUILD_LOG;
+            DefaultAppPath.Text                    = Settings.DEFAULT_HOMEBREW_APP;
         }
 
         private void Apply_Click(object sender, EventArgs e)
@@ -36,8 +41,33 @@ namespace RyujinxAutoUpdate
 
         private void ShouldOpenDefaultHomebrewCheck_CheckedChanged(object sender, EventArgs e)
         {
-            DefaultApp.Enabled = ShouldOpenDefaultHomebrewCheck.Checked;
+            DefaultApp.Enabled                    = ShouldOpenDefaultHomebrewCheck.Checked;
+            DefaultAppPath.Enabled                = ShouldOpenDefaultHomebrewCheck.Checked;
             Settings.SHOULD_OPEN_DEFAULT_HOMEBREW = ShouldOpenDefaultHomebrewCheck.Checked;
+        }
+
+        private void ShowRyujinxConsoleCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.SHOW_RYUJINX_CONSOLE =  ShowRyujinxConsoleCheck.Checked;
+            WriteRyujinxLogCheck.Enabled  = !ShowRyujinxConsoleCheck.Checked;
+        }
+
+        private void WriteRyujinxLogCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.WRITE_RYUJINX_LOG      =  WriteRyujinxLogCheck.Checked;
+            ShowRyujinxConsoleCheck.Enabled = !WriteRyujinxLogCheck.Checked;
+        }
+
+        private void ShowBuildConsoleCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.SHOW_BUILD_CONSOLE = ShowBuildConsoleCheck.Checked;
+            WriteBuildLogCheck.Enabled  = !ShowBuildConsoleCheck.Checked;
+        }
+
+        private void WriteBuildLogCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.WRITE_BUILD_LOG      = WriteBuildLogCheck.Checked;
+            ShowBuildConsoleCheck.Enabled = !WriteBuildLogCheck.Checked;
         }
 
         private void DefaultApp_Click(object sender, EventArgs e)
@@ -53,6 +83,7 @@ namespace RyujinxAutoUpdate
             if (result == DialogResult.OK)
             {
                 Settings.DEFAULT_HOMEBREW_APP = fileDialog.FileName;
+                DefaultAppPath.Text           = fileDialog.FileName;
                 fileDialog.Dispose();
             }
             else if (result == DialogResult.Cancel)
