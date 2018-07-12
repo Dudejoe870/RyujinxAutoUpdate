@@ -11,9 +11,9 @@ namespace RyujinxAutoUpdate
 {
     public partial class MainForm : Form
     {
-        private string RyujinxDownloadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx";
-        private string BuildLogFilePath    = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Build.log";
-        private string RyujinxLogFilePath  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx.log";
+        public static string RyujinxDownloadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx";
+        public static string BuildLogFilePath    = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Build.log";
+        public static string RyujinxLogFilePath  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx.log";
 
         public MainForm()
         {
