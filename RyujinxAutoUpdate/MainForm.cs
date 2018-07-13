@@ -307,7 +307,7 @@ namespace RyujinxAutoUpdate
             if (IsDirectoryEmpty(RyujinxDownloadPath))
             {
                 CurrentProc.StartInfo.FileName = "git";
-                CurrentProc.StartInfo.Arguments = "-C \"" + RyujinxDownloadPath + "\" clone https://github.com/gdkchan/Ryujinx.git ./";
+                CurrentProc.StartInfo.Arguments = "-C \"" + RyujinxDownloadPath + "\" clone https://github.com/Ryujinx/Ryujinx.git ./";
 
                 // Clone the repository
                 toolStrip1.Items[0].Text = "Cloning the Git Repository...";
