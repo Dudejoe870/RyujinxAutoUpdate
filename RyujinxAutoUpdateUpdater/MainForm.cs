@@ -67,6 +67,7 @@ namespace RyujinxAutoUpdateUpdater
                 foreach (DirectoryInfo dir in di.GetDirectories()) if (dir.Name != "Ryujinx" && dir.Name != "FileTMP") dir.Delete(true);
             }
 
+            if (!Directory.Exists(DownloadPath)) Directory.CreateDirectory(DownloadPath);
             System.IO.Compression.ZipFile.ExtractToDirectory(ZipFile, DownloadPath);
 
             if (Directory.Exists(DownloadPath + "\\Release\\FileTMP") && !IsDirectoryEmpty(DownloadPath + "\\Release\\FileTMP"))
