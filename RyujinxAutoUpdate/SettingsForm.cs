@@ -27,7 +27,7 @@ namespace RyujinxAutoUpdate
             WriteBuildLogCheck.Checked             = Settings.WRITE_BUILD_LOG;
             DefaultAppPath.Text                    = Settings.DEFAULT_HOMEBREW_APP;
 
-            if (branches == null)      branches      = GitParser.GitBranches     (MainForm.RyujinxDownloadPath);
+            if (branches == null)      branches      = GitParser.GitRemoteBranches     (MainForm.RyujinxDownloadPath);
             if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch(MainForm.RyujinxDownloadPath);
 
             CurrentBranchLabel.Text += " " + currentBranch;
@@ -114,6 +114,11 @@ namespace RyujinxAutoUpdate
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void GitLoginButton_Click(object sender, EventArgs e)
+        {
+            GitParser.GitLoggedIn(GitLoginUsername.Text, GitLoginEmail.Text);
         }
 
         private void listView1_ItemActivate(object sender, EventArgs e)

@@ -44,6 +44,13 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.label5 = new System.Windows.Forms.Label();
             this.CurrentBranchLabel = new System.Windows.Forms.Label();
+            this.GitLoginUsername = new System.Windows.Forms.TextBox();
+            this.GitLoginEmail = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.GitLoginButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Cancel
@@ -225,12 +232,84 @@
             this.CurrentBranchLabel.TabIndex = 15;
             this.CurrentBranchLabel.Text = "Current Branch:";
             // 
+            // GitLoginUsername
+            // 
+            this.GitLoginUsername.Location = new System.Drawing.Point(719, 25);
+            this.GitLoginUsername.Name = "GitLoginUsername";
+            this.GitLoginUsername.Size = new System.Drawing.Size(211, 20);
+            this.GitLoginUsername.TabIndex = 16;
+            // 
+            // GitLoginEmail
+            // 
+            this.GitLoginEmail.Location = new System.Drawing.Point(719, 51);
+            this.GitLoginEmail.Name = "GitLoginEmail";
+            this.GitLoginEmail.Size = new System.Drawing.Size(211, 20);
+            this.GitLoginEmail.TabIndex = 17;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(623, 25);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 17);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Git Username:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(651, 51);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(62, 17);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Git Email:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(716, 74);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(316, 17);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "Note: This is required for Merging Branches to work.";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(622, 2);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(73, 21);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Git Login";
+            // 
+            // GitLoginButton
+            // 
+            this.GitLoginButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GitLoginButton.Location = new System.Drawing.Point(719, 100);
+            this.GitLoginButton.Name = "GitLoginButton";
+            this.GitLoginButton.Size = new System.Drawing.Size(74, 26);
+            this.GitLoginButton.TabIndex = 22;
+            this.GitLoginButton.Text = "Login";
+            this.GitLoginButton.UseVisualStyleBackColor = true;
+            this.GitLoginButton.Click += new System.EventHandler(this.GitLoginButton_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1037, 549);
+            this.Controls.Add(this.GitLoginButton);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.GitLoginEmail);
+            this.Controls.Add(this.GitLoginUsername);
             this.Controls.Add(this.CurrentBranchLabel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.listView1);
@@ -273,5 +352,12 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label CurrentBranchLabel;
+        private System.Windows.Forms.TextBox GitLoginUsername;
+        private System.Windows.Forms.TextBox GitLoginEmail;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button GitLoginButton;
     }
 }
