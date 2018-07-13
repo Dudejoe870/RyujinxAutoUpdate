@@ -14,6 +14,9 @@ namespace RyujinxAutoUpdate
 {
     public partial class SettingsForm : Form
     {
+        private static string[] branches;
+        private static string currentBranch;
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -21,20 +24,25 @@ namespace RyujinxAutoUpdate
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            this.Icon = new Icon("Images/icon.ico");
+            this.Icon = new Icon("Images/settings.ico");
             Settings.UpdateValues();
             ShouldOpenDefaultHomebrewCheck.Checked = Settings.SHOULD_OPEN_DEFAULT_HOMEBREW;
-            ShowRyujinxConsoleCheck.Checked = Settings.SHOW_RYUJINX_CONSOLE;
-            WriteRyujinxLogCheck.Checked = Settings.WRITE_RYUJINX_LOG;
-            ShowBuildConsoleCheck.Checked = Settings.SHOW_BUILD_CONSOLE;
-            WriteBuildLogCheck.Checked = Settings.WRITE_BUILD_LOG;
-            DefaultAppPath.Text = Settings.DEFAULT_HOMEBREW_APP;
+            ShowRyujinxConsoleCheck.Checked        = Settings.SHOW_RYUJINX_CONSOLE;
+            WriteRyujinxLogCheck.Checked           = Settings.WRITE_RYUJINX_LOG;
+            ShowBuildConsoleCheck.Checked          = Settings.SHOW_BUILD_CONSOLE;
+            WriteBuildLogCheck.Checked             = Settings.WRITE_BUILD_LOG;
+            DefaultAppPath.Text                    = Settings.DEFAULT_HOMEBREW_APP;
 
-            if (GitParser.GitBranches(MainForm.RyujinxDownloadPath) != null)
+            if (branches == null)      branches      = GitParser.GitBranches     (MainForm.RyujinxDownloadPath);
+            if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch(MainForm.RyujinxDownloadPath);
+
+            CurrentBranchLabel.Text += " " + currentBranch;
+
+            if (branches != null)
             {
-                foreach (string s in GitParser.GitBranches(MainForm.RyujinxDownloadPath))
+                foreach (string s in branches)
                 {
-                    if (s != "master")
+                    if (s != currentBranch)
                     {
                         listView1.Items.Add(new ListViewItem
                         {
@@ -164,18 +172,23 @@ namespace RyujinxAutoUpdate
 
                     if (Git.ExitCode != 0)
                     {
+                        DialogResult res1 = MessageBox.Show("The merge abort failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
+                        if (res1 == DialogResult.OK)
+                        {
+                            return;
+                        }
                         Application.Exit(); // Abort!  This must be serious!
                     }
 
-                    DialogResult res1 = MessageBox.Show("The merge failed!  Git exited with Code: " + pullExit, "Error", MessageBoxButtons.OK);
-                    if (res1 == DialogResult.OK)
+                    DialogResult res2 = MessageBox.Show("The merge failed!  Git exited with Code: " + pullExit, "Error", MessageBoxButtons.OK);
+                    if (res2 == DialogResult.OK)
                     {
                         return;
                     }
                 }
 
-                DialogResult res2 = MessageBox.Show("The merge was a Success!  When you click OK, we will attempt to build Ryujinx.", "Success", MessageBoxButtons.OK);
-                if (res2 == DialogResult.OK)
+                DialogResult res3 = MessageBox.Show("The merge was a Success!  When you click OK, we will attempt to build Ryujinx.", "Success", MessageBoxButtons.OK);
+                if (res3 == DialogResult.OK)
                 {
                     Git.Dispose();
                     Process proc = new Process();

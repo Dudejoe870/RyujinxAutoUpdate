@@ -11,6 +11,63 @@ namespace RyujinxAutoUpdate
 {
     class GitParser
     {
+        public static string GitCurrentBranch(string ProjectPath)
+        {
+            if (!IsDirectoryEmpty(ProjectPath))
+            {
+                Process Git = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "git",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true
+                    }
+                };
+
+                List<string> Output = new List<string>();
+                string Result = null;
+
+                Git.StartInfo.Arguments = "-C \"" + ProjectPath + "\" branch";
+
+                Git.OutputDataReceived += (s, e) =>
+                {
+                    if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data);
+                };
+
+                Git.ErrorDataReceived += (s, e) =>
+                {
+                    if (!String.IsNullOrWhiteSpace(e.Data)) Output.Add(e.Data);
+                };
+
+                Git.Start();
+                Git.BeginOutputReadLine();
+                Git.BeginErrorReadLine();
+
+                Git.WaitForExit();
+
+                if (Git.ExitCode != 0)
+                {
+                    Console.WriteLine("Uh oh!  Git threw an error!");
+                    return null;
+                }
+
+                foreach (string s in Output)
+                {
+                    if (s.StartsWith("*"))
+                    {
+                        Result = Regex.Replace(s, @"\s+", "").Substring(1);
+                    }
+                }
+
+                return Result;
+            }
+
+            return null;
+        }
+
         public static string[] GitBranches(string ProjectPath)
         {
             if (!IsDirectoryEmpty(ProjectPath))

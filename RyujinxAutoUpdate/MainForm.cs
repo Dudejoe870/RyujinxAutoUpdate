@@ -22,7 +22,7 @@ namespace RyujinxAutoUpdate
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Icon = new Icon("Images/icon.ico");
+            this.Icon = new Icon("Images/main.ico");
             if (!Directory.Exists(RyujinxDownloadPath)) Directory.CreateDirectory(RyujinxDownloadPath);
             Settings.Init();
         }
