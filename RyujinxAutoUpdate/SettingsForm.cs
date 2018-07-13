@@ -150,6 +150,7 @@ namespace RyujinxAutoUpdate
                     DialogResult res1 = MessageBox.Show("The fetch failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
                     if (res1 == DialogResult.OK)
                     {
+                        Git.Dispose();
                         return;
                     }
                 }
@@ -164,7 +165,7 @@ namespace RyujinxAutoUpdate
                 {
                     int pullExit = Git.ExitCode;
 
-                    Git.StartInfo.Arguments = "-C \"" + MainForm.RyujinxDownloadPath + "\" reset --hard HEAD";
+                    Git.StartInfo.Arguments = "-C \"" + MainForm.RyujinxDownloadPath + "\" merge --abort";
 
                     Git.Start();
 
@@ -172,19 +173,21 @@ namespace RyujinxAutoUpdate
 
                     if (Git.ExitCode != 0)
                     {
-                        DialogResult res1 = MessageBox.Show("The reset failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
+                        DialogResult res1 = MessageBox.Show("The merge abort failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
                         if (res1 == DialogResult.OK)
                         {
-                            return;
+                            Git.Dispose();
+                            return; // Abort!  This must be serious!
                         }
-                        Application.Exit(); // Abort!  This must be serious!
                     }
 
                     DialogResult res2 = MessageBox.Show("The merge failed!  Git exited with Code: " + pullExit, "Error", MessageBoxButtons.OK);
                     if (res2 == DialogResult.OK)
                     {
+                        Git.Dispose();
                         return;
                     }
+                    Git.Dispose();
                 }
 
                 DialogResult res3 = MessageBox.Show("The merge was a Success!  When you click OK, we will attempt to build Ryujinx.", "Success", MessageBoxButtons.OK);
