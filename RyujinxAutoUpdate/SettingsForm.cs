@@ -164,7 +164,7 @@ namespace RyujinxAutoUpdate
                 {
                     int pullExit = Git.ExitCode;
 
-                    Git.StartInfo.Arguments = "-C \"" + MainForm.RyujinxDownloadPath + "\" merge --abort";
+                    Git.StartInfo.Arguments = "-C \"" + MainForm.RyujinxDownloadPath + "\" reset --hard HEAD";
 
                     Git.Start();
 
@@ -172,7 +172,7 @@ namespace RyujinxAutoUpdate
 
                     if (Git.ExitCode != 0)
                     {
-                        DialogResult res1 = MessageBox.Show("The merge abort failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
+                        DialogResult res1 = MessageBox.Show("The reset failed!  Git exited with Code: " + Git.ExitCode, "Error", MessageBoxButtons.OK);
                         if (res1 == DialogResult.OK)
                         {
                             return;
