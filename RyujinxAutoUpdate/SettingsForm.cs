@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Octokit;
 
 namespace RyujinxAutoUpdate
 {
@@ -16,6 +17,9 @@ namespace RyujinxAutoUpdate
     {
         private static string[] branches;
         private static string currentBranch;
+        private static GitHubClient Client; // Github things will be used at a later date, for Fork Merging.
+        private static Connection conn;
+        private static Octokit.Reactive.ObservableRepositoryForksClient ForksClient;
 
         public SettingsForm()
         {
@@ -35,6 +39,10 @@ namespace RyujinxAutoUpdate
 
             if (branches == null)      branches      = GitParser.GitBranches     (MainForm.RyujinxDownloadPath);
             if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch(MainForm.RyujinxDownloadPath);
+
+            if (conn == null) conn = new Connection(new ProductHeaderValue("RyujinxAutoUpdate")); // Github things will be used at a later date, for Fork Merging.
+            if (Client == null) Client = new GitHubClient(conn);
+            if (ForksClient == null) ForksClient = new Octokit.Reactive.ObservableRepositoryForksClient(Client);
 
             CurrentBranchLabel.Text += " " + currentBranch;
 
