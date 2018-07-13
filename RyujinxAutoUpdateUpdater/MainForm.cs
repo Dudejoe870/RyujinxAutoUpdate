@@ -58,7 +58,7 @@ namespace RyujinxAutoUpdateUpdater
                 }
             }
 
-            if (!IsDirectoryEmpty(DownloadPath))
+            if (Directory.Exists(DownloadPath) && !IsDirectoryEmpty(DownloadPath))
             {
                 DirectoryInfo di = new DirectoryInfo(DownloadPath + "\\Release");
 
