@@ -149,6 +149,8 @@ namespace RyujinxAutoUpdate
 
             GameList.AddGameListEntry(entry);
             MainForm.ReloadGameList();
+
+            Meta = new GameList.GameListMetaData();
         }
 
         private static Bitmap ResizeImage(Image image, int width, int height)
