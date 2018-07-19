@@ -41,8 +41,7 @@ namespace RyujinxAutoUpdate
 
             if (result == DialogResult.OK)
             {
-                if (File.Exists(folderBrowser.SelectedPath + "\\main.npdm")  && File.Exists(folderBrowser.SelectedPath + "\\main") && 
-                   (File.Exists(folderBrowser.SelectedPath + "\\game.romfs") || File.Exists(folderBrowser.SelectedPath + "\\game.istorage")))
+                if (File.Exists(folderBrowser.SelectedPath + "\\main.npdm")  && File.Exists(folderBrowser.SelectedPath + "\\main"))
                 {
                     PathText.Text = folderBrowser.SelectedPath;
                     if (!String.IsNullOrWhiteSpace(PathText.Text)) isUnlocked = true;
