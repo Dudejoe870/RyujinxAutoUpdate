@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.ToolStripInfo = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -36,6 +37,9 @@
             this.OpenHomebrewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gameListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DownloadInstallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DownloadUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.InstallOpenALToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +48,8 @@
             this.InstallAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GameList = new System.Windows.Forms.ListView();
+            this.GameListImages = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -106,7 +112,8 @@
             // EditToolStripMenuItem
             // 
             this.EditToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SettingsToolStripMenuItem});
+            this.SettingsToolStripMenuItem,
+            this.gameListToolStripMenuItem});
             this.EditToolStripMenuItem.Name = "EditToolStripMenuItem";
             this.EditToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.EditToolStripMenuItem.Text = "Edit";
@@ -114,9 +121,32 @@
             // SettingsToolStripMenuItem
             // 
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.SettingsToolStripMenuItem.Text = "Settings";
             this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
+            // 
+            // gameListToolStripMenuItem
+            // 
+            this.gameListToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addEntryToolStripMenuItem,
+            this.removeEntryToolStripMenuItem});
+            this.gameListToolStripMenuItem.Name = "gameListToolStripMenuItem";
+            this.gameListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gameListToolStripMenuItem.Text = "Game List";
+            // 
+            // addEntryToolStripMenuItem
+            // 
+            this.addEntryToolStripMenuItem.Name = "addEntryToolStripMenuItem";
+            this.addEntryToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.addEntryToolStripMenuItem.Text = "Add Entry";
+            this.addEntryToolStripMenuItem.Click += new System.EventHandler(this.AddEntryToolStripMenuItem_Click);
+            // 
+            // removeEntryToolStripMenuItem
+            // 
+            this.removeEntryToolStripMenuItem.Name = "removeEntryToolStripMenuItem";
+            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeEntryToolStripMenuItem.Text = "Remove Entry";
+            this.removeEntryToolStripMenuItem.Click += new System.EventHandler(this.RemoveEntryToolStripMenuItem_Click);
             // 
             // DownloadInstallToolStripMenuItem
             // 
@@ -180,6 +210,30 @@
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
+            // GameList
+            // 
+            this.GameList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GameList.BackColor = System.Drawing.Color.DarkGray;
+            this.GameList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GameList.LargeImageList = this.GameListImages;
+            this.GameList.Location = new System.Drawing.Point(0, 27);
+            this.GameList.MultiSelect = false;
+            this.GameList.Name = "GameList";
+            this.GameList.Size = new System.Drawing.Size(1264, 626);
+            this.GameList.Sorting = System.Windows.Forms.SortOrder.Descending;
+            this.GameList.TabIndex = 0;
+            this.GameList.TabStop = false;
+            this.GameList.UseCompatibleStateImageBehavior = false;
+            this.GameList.ItemActivate += new System.EventHandler(this.GameList_ItemActivate);
+            // 
+            // GameListImages
+            // 
+            this.GameListImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
+            this.GameListImages.ImageSize = new System.Drawing.Size(192, 192);
+            this.GameListImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -187,6 +241,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.GameList);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -222,6 +277,11 @@
         private System.Windows.Forms.ToolStripMenuItem InstallAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EditToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addEntryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeEntryToolStripMenuItem;
+        public System.Windows.Forms.ListView GameList;
+        public System.Windows.Forms.ImageList GameListImages;
     }
 }
 

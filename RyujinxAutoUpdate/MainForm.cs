@@ -15,9 +15,12 @@ namespace RyujinxAutoUpdate
         public static string BuildLogFilePath    = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Build.log";
         public static string RyujinxLogFilePath  = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Ryujinx.log";
 
+        public static MainForm Instance { get; private set; }
+
         public MainForm()
         {
             InitializeComponent();
+            Instance = this;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -25,6 +28,48 @@ namespace RyujinxAutoUpdate
             this.Icon = new Icon("Images/main.ico");
             if (!Directory.Exists(RyujinxDownloadPath)) Directory.CreateDirectory(RyujinxDownloadPath);
             Settings.Init();
+            RyujinxAutoUpdate.GameList.Init();
+            ReloadIconSize();
+            ReloadGameList();
+        }
+
+        public static void ReloadIconSize()
+        {
+            if (Settings.GAMELIST_ICON_SIZE == "Small")
+            {
+                Instance.GameListImages.ImageSize = new Size(128, 128);
+            }
+            else if (Settings.GAMELIST_ICON_SIZE == "Medium")
+            {
+                Instance.GameListImages.ImageSize = new Size(192, 192);
+            }
+            else if (Settings.GAMELIST_ICON_SIZE == "Large")
+            {
+                Instance.GameListImages.ImageSize = new Size(256, 256);
+            }
+            else
+            {
+                MessageBox.Show("Game List Icon Size is not a valid Value!", "Error");
+                Instance.GameListImages.ImageSize = new Size(192, 192);
+            }
+        }
+
+        public static void ReloadGameList()
+        {
+            Instance.GameList.Clear();
+            Instance.GameListImages.Images.Clear();
+
+            foreach (RyujinxAutoUpdate.GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games) 
+            {
+                if (File.Exists("./Images/GameThumbnails/" + entry.TitleID + ".jpg"))
+                    Instance.GameListImages.Images.Add(entry.TitleID, Image.FromFile("./Images/GameThumbnails/" + entry.TitleID + ".jpg"));
+                else
+                    Instance.GameListImages.Images.Add(entry.TitleID, Image.FromFile("./Images/GameThumbnails/UnknownGame.jpg"));
+                ListViewItem item = Instance.GameList.Items.Add(entry.AppName);
+
+                item.ImageKey = entry.TitleID;
+                item.Tag      = entry.TitleID;
+            }
         }
 
         private void DownloadUpdateRyujinxToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,7 +149,7 @@ namespace RyujinxAutoUpdate
             {
                 OpenFileDialog fileDialog = new OpenFileDialog
                 {
-                    Title = "Select a NRO to open"
+                    Title = "Please select a NRO to open."
                 };
 
                 fileDialog.Filter = "Homebrew Game (*.nro)|*.nro";
@@ -145,7 +190,35 @@ namespace RyujinxAutoUpdate
         {
             SettingsForm settings = new SettingsForm();
             settings.Show();
-            Console.WriteLine(Settings.DEFAULT_HOMEBREW_APP);
+        }
+
+        private void AddEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddGameListEntry addGameForm = new AddGameListEntry();
+            addGameForm.Show();
+        }
+
+        private void RemoveEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RemoveGameListEntry removeGameForm = new RemoveGameListEntry();
+            removeGameForm.Show();
+        }
+
+        private void GameList_ItemActivate(object sender, EventArgs e)
+        {
+            string TitleID = (string)((ListView)sender).SelectedItems[0].Tag;
+            RyujinxAutoUpdate.GameList.GameListEntry Game = new RyujinxAutoUpdate.GameList.GameListEntry();
+
+            foreach (RyujinxAutoUpdate.GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games)
+            {
+                if (entry.TitleID == TitleID)
+                {
+                    Game = entry;
+                    break;
+                }
+            }
+
+            RunRyujinx(Game.GamePath);
         }
 
         private void InstallOpenALToolStripMenuItem_Click(object sender, EventArgs e)
@@ -226,7 +299,7 @@ namespace RyujinxAutoUpdate
                 //InstallGit(false);
                 if (InstallDotNet(false) != 0) return;
                 //InstallDotNet(false);
-                DialogResult RestartApp = MessageBox.Show("Do you want to Quit (And Manually) Restart the Application now?\n" +
+                DialogResult RestartApp = MessageBox.Show("Do you want to Quit and (Manually) Restart the Application now?\n" +
                     "This is required to finish the setup, you can click Cancel to restart the Application later.", "Restart?", MessageBoxButtons.OKCancel);
                 if (RestartApp == DialogResult.OK)
                 {

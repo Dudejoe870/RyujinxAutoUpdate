@@ -67,7 +67,7 @@ namespace RyujinxAutoUpdate
 
             Git.Dispose();
 
-            MessageBox.Show("Login Successful!", "Login");
+            MessageBox.Show("Login Successful!", "Success");
         }
 
         public static string GitCurrentBranch(string ProjectPath)

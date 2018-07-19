@@ -26,9 +26,10 @@ namespace RyujinxAutoUpdate
             ShowBuildConsoleCheck.Checked          = Settings.SHOW_BUILD_CONSOLE;
             WriteBuildLogCheck.Checked             = Settings.WRITE_BUILD_LOG;
             DefaultAppPath.Text                    = Settings.DEFAULT_HOMEBREW_APP;
+            IconSize.Text                          = Settings.GAMELIST_ICON_SIZE;
 
-            if (branches == null)      branches      = GitParser.GitRemoteBranches     (MainForm.RyujinxDownloadPath);
-            if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch(MainForm.RyujinxDownloadPath);
+            if (branches == null)      branches      = GitParser.GitRemoteBranches(MainForm.RyujinxDownloadPath);
+            if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch (MainForm.RyujinxDownloadPath);
 
             CurrentBranchLabel.Text += " " + currentBranch;
 
@@ -49,7 +50,16 @@ namespace RyujinxAutoUpdate
 
         private void Apply_Click(object sender, EventArgs e)
         {
-            Settings.UpdateINI();
+            if (IconSize.Items.Contains(IconSize.Text))
+            {
+                Settings.UpdateINI();
+                MainForm.ReloadIconSize();
+                MainForm.ReloadGameList();
+            }
+            else
+            {
+                MessageBox.Show("Game List Icon Size is not of a proper value.", "Error");
+            }
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -59,33 +69,40 @@ namespace RyujinxAutoUpdate
 
         private void ShouldOpenDefaultHomebrewCheck_CheckedChanged(object sender, EventArgs e)
         {
-            DefaultApp.Enabled = ShouldOpenDefaultHomebrewCheck.Checked;
-            DefaultAppPath.Enabled = ShouldOpenDefaultHomebrewCheck.Checked;
+            DefaultApp.Enabled                    = ShouldOpenDefaultHomebrewCheck.Checked;
+            DefaultAppPath.Enabled                = ShouldOpenDefaultHomebrewCheck.Checked;
             Settings.SHOULD_OPEN_DEFAULT_HOMEBREW = ShouldOpenDefaultHomebrewCheck.Checked;
         }
 
         private void ShowRyujinxConsoleCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.SHOW_RYUJINX_CONSOLE = ShowRyujinxConsoleCheck.Checked;
-            WriteRyujinxLogCheck.Enabled = !ShowRyujinxConsoleCheck.Checked;
+            Settings.SHOW_RYUJINX_CONSOLE =  ShowRyujinxConsoleCheck.Checked;
+            WriteRyujinxLogCheck.Enabled  = !ShowRyujinxConsoleCheck.Checked;
         }
 
         private void WriteRyujinxLogCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.WRITE_RYUJINX_LOG = WriteRyujinxLogCheck.Checked;
+            Settings.WRITE_RYUJINX_LOG      =  WriteRyujinxLogCheck.Checked;
             ShowRyujinxConsoleCheck.Enabled = !WriteRyujinxLogCheck.Checked;
         }
 
         private void ShowBuildConsoleCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.SHOW_BUILD_CONSOLE = ShowBuildConsoleCheck.Checked;
-            WriteBuildLogCheck.Enabled = !ShowBuildConsoleCheck.Checked;
+            Settings.SHOW_BUILD_CONSOLE =  ShowBuildConsoleCheck.Checked;
+            WriteBuildLogCheck.Enabled  = !ShowBuildConsoleCheck.Checked;
         }
 
         private void WriteBuildLogCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.WRITE_BUILD_LOG = WriteBuildLogCheck.Checked;
+            Settings.WRITE_BUILD_LOG      =  WriteBuildLogCheck.Checked;
             ShowBuildConsoleCheck.Enabled = !WriteBuildLogCheck.Checked;
+        }
+
+        private void GameListIconSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox) sender;
+
+            Settings.GAMELIST_ICON_SIZE = comboBox.Text;
         }
 
         private void DefaultApp_Click(object sender, EventArgs e)
@@ -111,17 +128,12 @@ namespace RyujinxAutoUpdate
             }
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void GitLoginButton_Click(object sender, EventArgs e)
         {
             GitParser.GitLoggedIn(GitLoginUsername.Text, GitLoginEmail.Text);
         }
 
-        private void listView1_ItemActivate(object sender, EventArgs e)
+        private void ListView1_ItemActivate(object sender, EventArgs e)
         {
             string Branch = ((ListView)sender).SelectedItems[0].Text;
 
@@ -195,10 +207,10 @@ namespace RyujinxAutoUpdate
                     Git.Dispose();
                     Process proc = new Process();
 
-                    proc.StartInfo.FileName = "dotnet";
-                    proc.StartInfo.Arguments = "build -c Release \"" + MainForm.RyujinxDownloadPath + "\\Ryujinx\"";
+                    proc.StartInfo.FileName        = "dotnet";
+                    proc.StartInfo.Arguments       = "build -c Release \"" + MainForm.RyujinxDownloadPath + "\\Ryujinx\"";
                     proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.CreateNoWindow = !Settings.SHOW_BUILD_CONSOLE;
+                    proc.StartInfo.CreateNoWindow  = !Settings.SHOW_BUILD_CONSOLE;
 
                     proc.StartInfo.RedirectStandardError  = Settings.WRITE_BUILD_LOG;
                     proc.StartInfo.RedirectStandardOutput = Settings.WRITE_BUILD_LOG;
@@ -208,7 +220,7 @@ namespace RyujinxAutoUpdate
                     if (Settings.WRITE_BUILD_LOG)
                     {
                         proc.OutputDataReceived += (s, ev) => LOG += ev.Data + '\n';
-                        proc.ErrorDataReceived += (s, ev) => LOG += ev.Data + '\n';
+                        proc.ErrorDataReceived  += (s, ev) => LOG += ev.Data + '\n';
                     }
 
                     // Build Ryujinx

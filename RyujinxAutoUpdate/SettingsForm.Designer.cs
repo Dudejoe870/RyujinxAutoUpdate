@@ -51,6 +51,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.GitLoginButton = new System.Windows.Forms.Button();
+            this.IconSize = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Cancel
@@ -207,8 +210,7 @@
             this.listView1.TabIndex = 13;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
-            this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.ItemActivate += new System.EventHandler(this.ListView1_ItemActivate);
             // 
             // label5
             // 
@@ -234,6 +236,7 @@
             // 
             // GitLoginUsername
             // 
+            this.GitLoginUsername.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GitLoginUsername.Location = new System.Drawing.Point(719, 25);
             this.GitLoginUsername.Name = "GitLoginUsername";
             this.GitLoginUsername.Size = new System.Drawing.Size(211, 20);
@@ -241,6 +244,7 @@
             // 
             // GitLoginEmail
             // 
+            this.GitLoginEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GitLoginEmail.Location = new System.Drawing.Point(719, 51);
             this.GitLoginEmail.Name = "GitLoginEmail";
             this.GitLoginEmail.Size = new System.Drawing.Size(211, 20);
@@ -248,6 +252,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(623, 25);
@@ -258,6 +263,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(651, 51);
@@ -268,6 +274,7 @@
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(716, 74);
@@ -278,6 +285,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(622, 2);
@@ -288,6 +296,7 @@
             // 
             // GitLoginButton
             // 
+            this.GitLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GitLoginButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GitLoginButton.Location = new System.Drawing.Point(719, 100);
             this.GitLoginButton.Name = "GitLoginButton";
@@ -297,12 +306,53 @@
             this.GitLoginButton.UseVisualStyleBackColor = true;
             this.GitLoginButton.Click += new System.EventHandler(this.GitLoginButton_Click);
             // 
+            // IconSize
+            // 
+            this.IconSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.IconSize.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IconSize.FormattingEnabled = true;
+            this.IconSize.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.IconSize.Items.AddRange(new object[] {
+            "Large",
+            "Medium",
+            "Small"});
+            this.IconSize.Location = new System.Drawing.Point(752, 159);
+            this.IconSize.Name = "IconSize";
+            this.IconSize.Size = new System.Drawing.Size(135, 25);
+            this.IconSize.TabIndex = 23;
+            this.IconSize.SelectedIndexChanged += new System.EventHandler(this.GameListIconSize_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(622, 138);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(139, 21);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "Game List Settings";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(623, 162);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(123, 17);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "Game List Icon Size:";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1037, 549);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.IconSize);
             this.Controls.Add(this.GitLoginButton);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -359,5 +409,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button GitLoginButton;
+        private System.Windows.Forms.ComboBox IconSize;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }
