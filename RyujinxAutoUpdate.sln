@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RyujinxAutoUpdate", "RyujinxAutoUpdate\RyujinxAutoUpdate.csproj", "{6D3B9C7F-D923-4B22-AEAD-B49BEEDEC120}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RyujinxAutoUpdateUpdater", "RyujinxAutoUpdateUpdater\RyujinxAutoUpdateUpdater.csproj", "{280D8366-928B-4F39-B80D-0D5F82F8DB17}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{6D3B9C7F-D923-4B22-AEAD-B49BEEDEC120}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3B9C7F-D923-4B22-AEAD-B49BEEDEC120}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3B9C7F-D923-4B22-AEAD-B49BEEDEC120}.Release|Any CPU.Build.0 = Release|Any CPU
-		{280D8366-928B-4F39-B80D-0D5F82F8DB17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{280D8366-928B-4F39-B80D-0D5F82F8DB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{280D8366-928B-4F39-B80D-0D5F82F8DB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{280D8366-928B-4F39-B80D-0D5F82F8DB17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
