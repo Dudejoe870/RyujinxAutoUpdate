@@ -154,15 +154,21 @@ namespace RyujinxAutoUpdate
         {
             entrysfound = new List<GameList.GameListEntry>();
             int foundgames = 0;
+            int skippedgames = 0;
 
             foreach (string dir in Directory.GetDirectories(PathText.Text))
             {
                 if (GameList.IsGameDirectoryValid(dir))
                 {
-                    ++foundgames;
-                    ScanState.Text = "Games found: " + foundgames + " (This process may take a while)\nIf this number doesn't update for a long time, please restart the application\none of your games could be a retail only game\nIf this happens please exit the application\nremove the game from the directory temporarily\nthen add it back once it is finished.";
+                    ScanState.Text = "Games found: " + foundgames + "\nSkipped Games (Aka Games not found on the CDN): " + skippedgames + "\n(This process may take a while)";
                     GameList.GameListMetaData metaData = GameList.ParseGameFiles(dir);
                     metaData.nacp = NintendoCDN.GetGameMetadata(metaData.npdm.TitleID);
+
+                    if (metaData.nacp.TitleName == null)
+                    {
+                        ++skippedgames;
+                        continue;
+                    }
 
                     GameList.GameListEntry entry = new GameList.GameListEntry
                     {
@@ -173,10 +179,11 @@ namespace RyujinxAutoUpdate
                     };
 
                     entrysfound.Add(entry);
+                    ++foundgames;
                 }
             }
 
-            ScanState.Text = "All Games found: " + foundgames;
+            ScanState.Text = "All Games found: " + foundgames + "\nAll Games Skipped: " + skippedgames;
         }
 
         private void Add_Click(object sender, EventArgs e)

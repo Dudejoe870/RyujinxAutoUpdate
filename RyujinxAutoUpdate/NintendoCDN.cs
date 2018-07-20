@@ -55,7 +55,19 @@ namespace RyujinxAutoUpdate
             GetMetaNCAID.ClientCertificates.Add(Cert);
             GetMetaNCAID.Method = "HEAD";
             GetMetaNCAID.UserAgent = "NintendoSDK Firmware/" + fw + " (platform:NX; did:" + did + "; eid:lp1)";
-            HttpWebResponse ParseMetaNCAID = (HttpWebResponse)GetMetaNCAID.GetResponse();
+            HttpWebResponse ParseMetaNCAID = null;
+            try
+            {
+                ParseMetaNCAID = (HttpWebResponse)GetMetaNCAID.GetResponse();
+            }
+            catch (WebException e)
+            {
+                int statusCode = (int)((HttpWebResponse)GetMetaNCAID.GetResponse()).StatusCode;
+
+                if (statusCode == 404) return new GameList.GameListNACP(); // If it's not found on the CDN then just return null values.
+                else throw e; // If it's not that then just throw the exception.
+            }
+
             ParseMetaNCAID.Close();
 
             // Download The Meta NCA
