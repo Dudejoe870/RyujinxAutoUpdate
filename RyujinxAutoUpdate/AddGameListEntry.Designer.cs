@@ -41,6 +41,8 @@
             this.Add = new System.Windows.Forms.Button();
             this.Thumbnail = new System.Windows.Forms.PictureBox();
             this.GetMetadataCDN = new System.Windows.Forms.Button();
+            this.ScanDir = new System.Windows.Forms.Button();
+            this.ScanState = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Thumbnail)).BeginInit();
             this.SuspendLayout();
             // 
@@ -168,11 +170,36 @@
             this.GetMetadataCDN.Visible = false;
             this.GetMetadataCDN.Click += new System.EventHandler(this.GetMetadataCDN_Click);
             // 
+            // ScanDir
+            // 
+            this.ScanDir.Enabled = false;
+            this.ScanDir.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScanDir.Location = new System.Drawing.Point(418, 42);
+            this.ScanDir.Name = "ScanDir";
+            this.ScanDir.Size = new System.Drawing.Size(112, 34);
+            this.ScanDir.TabIndex = 14;
+            this.ScanDir.Text = "Scan Directory";
+            this.ScanDir.UseVisualStyleBackColor = true;
+            this.ScanDir.Visible = false;
+            this.ScanDir.Click += new System.EventHandler(this.ScanDir_Click);
+            // 
+            // ScanState
+            // 
+            this.ScanState.AutoSize = true;
+            this.ScanState.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScanState.Location = new System.Drawing.Point(536, 48);
+            this.ScanState.Name = "ScanState";
+            this.ScanState.Size = new System.Drawing.Size(99, 21);
+            this.ScanState.TabIndex = 15;
+            this.ScanState.Text = "SCAN_STATE";
+            // 
             // AddGameListEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1159, 645);
+            this.Controls.Add(this.ScanState);
+            this.Controls.Add(this.ScanDir);
             this.Controls.Add(this.GetMetadataCDN);
             this.Controls.Add(this.Thumbnail);
             this.Controls.Add(this.Add);
@@ -210,5 +237,7 @@
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.PictureBox Thumbnail;
         private System.Windows.Forms.Button GetMetadataCDN;
+        private System.Windows.Forms.Button ScanDir;
+        private System.Windows.Forms.Label ScanState;
     }
 }

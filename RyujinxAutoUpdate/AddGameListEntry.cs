@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,7 +29,9 @@ namespace RyujinxAutoUpdate
             this.Icon = new Icon("Images/main.ico");
             UpdateLock();
             GetMetadataCDN.Visible = Settings.GET_METADATA_FROM_CDN;
-            Meta = new GameList.GameListMetaData();
+            ScanDir.Visible        = Settings.GET_METADATA_FROM_CDN;
+            ScanState.Text         = "";
+            Meta                   = new GameList.GameListMetaData();
         }
 
         private void SelectGamePath_Click(object sender, EventArgs e)
@@ -42,15 +45,25 @@ namespace RyujinxAutoUpdate
 
             if (result == DialogResult.OK)
             {
-                if (File.Exists(folderBrowser.SelectedPath + "\\main.npdm")  && File.Exists(folderBrowser.SelectedPath + "\\main"))
+                PathText.Text = folderBrowser.SelectedPath;
+                if (GameList.IsGameDirectoryValid(folderBrowser.SelectedPath))
                 {
-                    PathText.Text = folderBrowser.SelectedPath;
-                    if (!String.IsNullOrWhiteSpace(PathText.Text)) isUnlocked = true;
+                    if (!String.IsNullOrWhiteSpace(PathText.Text))
+                    {
+                        isUnlocked = true;
+                        Add.Enabled = true;
+                        ScanDir.Enabled = false;
+                    }
+
                     UpdateLock();
                 }
                 else
                 {
-                    MessageBox.Show("This isn't a valid RomFS / ExeFS Folder.", "Error");
+                    if (!String.IsNullOrWhiteSpace(PathText.Text))
+                    {
+                        ScanDir.Enabled = true;
+                        Add.Enabled = true;
+                    }
                 }
                 
                 folderBrowser.Dispose();
@@ -135,35 +148,74 @@ namespace RyujinxAutoUpdate
             Bitmap scaledImage = ResizeImage(image, 256, 256);
             Thumbnail.Image = scaledImage;
         }
+        List<GameList.GameListEntry> entrysfound;
+
+        private void ScanDir_Click(object sender, EventArgs e)
+        {
+            entrysfound = new List<GameList.GameListEntry>();
+            int foundgames = 0;
+
+            foreach (string dir in Directory.GetDirectories(PathText.Text))
+            {
+                if (GameList.IsGameDirectoryValid(dir))
+                {
+                    ++foundgames;
+                    ScanState.Text = "Games found: " + foundgames + " (This process may take a while)\nIf this number doesn't update for a long time, please restart the application\none of your games could be a retail only game\nIf this happens please exit the application\nremove the game from the directory temporarily\nthen add it back once it is finished.";
+                    GameList.GameListMetaData metaData = GameList.ParseGameFiles(dir);
+                    metaData.nacp = NintendoCDN.GetGameMetadata(metaData.npdm.TitleID);
+
+                    GameList.GameListEntry entry = new GameList.GameListEntry
+                    {
+                        AppName = metaData.nacp.TitleName,
+                        Publisher = metaData.nacp.Publisher,
+                        TitleID   = metaData.npdm.TitleID,
+                        GamePath  = dir
+                    };
+
+                    entrysfound.Add(entry);
+                }
+            }
+
+            ScanState.Text = "All Games found: " + foundgames;
+        }
 
         private void Add_Click(object sender, EventArgs e)
         {
-            if (Meta.npdm.TitleID == null) Meta = RyujinxAutoUpdate.GameList.ParseGameFiles(PathText.Text);
-
-            if (!String.IsNullOrWhiteSpace(ThumbnailPath.Text))
+            if (entrysfound != null)
             {
-                if (File.Exists("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg"))
-                    File.Delete("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
-                File.Copy(ThumbnailPath.Text, "./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
+                foreach (GameList.GameListEntry entry in entrysfound) GameList.AddGameListEntry(entry);
+
+                MainForm.ReloadGameList();
             }
-
-            GameList.GameListEntry entry = new GameList.GameListEntry();
-
-            if (String.IsNullOrWhiteSpace(GameName.Text) || String.IsNullOrWhiteSpace(PublisherName.Text))
+            else
             {
-                MessageBox.Show("Please fill in the Game Name and or the Publisher Name.", "Error");
-                return;
+                if (Meta.npdm.TitleID == null) Meta = GameList.ParseGameFiles(PathText.Text);
+
+                if (!String.IsNullOrWhiteSpace(ThumbnailPath.Text))
+                {
+                    if (File.Exists("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg"))
+                        File.Delete("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
+                    File.Copy(ThumbnailPath.Text, "./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
+                }
+
+                GameList.GameListEntry entry = new GameList.GameListEntry();
+
+                if (String.IsNullOrWhiteSpace(GameName.Text) || String.IsNullOrWhiteSpace(PublisherName.Text))
+                {
+                    MessageBox.Show("Please fill in the Game Name and or the Publisher Name.", "Error");
+                    return;
+                }
+
+                entry.AppName = GameName.Text;
+                entry.Publisher = PublisherName.Text;
+                entry.GamePath = PathText.Text;
+                entry.TitleID = Meta.npdm.TitleID;
+
+                GameList.AddGameListEntry(entry);
+                MainForm.ReloadGameList();
+
+                Meta = new GameList.GameListMetaData();
             }
-
-            entry.AppName   = GameName.Text;
-            entry.Publisher = PublisherName.Text;
-            entry.GamePath  = PathText.Text;
-            entry.TitleID   = Meta.npdm.TitleID;
-
-            GameList.AddGameListEntry(entry);
-            MainForm.ReloadGameList();
-
-            Meta = new GameList.GameListMetaData();
 
             this.Close();
         }
@@ -212,7 +264,6 @@ namespace RyujinxAutoUpdate
             PublisherName.Enabled   = isUnlocked;
             SelectThumbnail.Enabled = isUnlocked;
             ThumbnailPath.Enabled   = isUnlocked;
-            Add.Enabled             = isUnlocked;
             GetMetadataCDN.Enabled  = isUnlocked;
         }
     }

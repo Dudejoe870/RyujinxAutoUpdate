@@ -50,8 +50,13 @@
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameList = new System.Windows.Forms.ListView();
             this.GameListImages = new System.Windows.Forms.ImageList(this.components);
+            this.GameListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.Reload = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.RemoveEntry = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.GameListContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -131,7 +136,7 @@
             this.addEntryToolStripMenuItem,
             this.removeEntryToolStripMenuItem});
             this.gameListToolStripMenuItem.Name = "gameListToolStripMenuItem";
-            this.gameListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gameListToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.gameListToolStripMenuItem.Text = "Game List";
             // 
             // addEntryToolStripMenuItem
@@ -144,7 +149,7 @@
             // removeEntryToolStripMenuItem
             // 
             this.removeEntryToolStripMenuItem.Name = "removeEntryToolStripMenuItem";
-            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.removeEntryToolStripMenuItem.Text = "Remove Entry";
             this.removeEntryToolStripMenuItem.Click += new System.EventHandler(this.RemoveEntryToolStripMenuItem_Click);
             // 
@@ -217,6 +222,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GameList.BackColor = System.Drawing.Color.DarkGray;
             this.GameList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GameList.ContextMenuStrip = this.GameListContextMenu;
             this.GameList.LargeImageList = this.GameListImages;
             this.GameList.Location = new System.Drawing.Point(0, 27);
             this.GameList.MultiSelect = false;
@@ -233,6 +239,36 @@
             this.GameListImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
             this.GameListImages.ImageSize = new System.Drawing.Size(192, 192);
             this.GameListImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // GameListContextMenu
+            // 
+            this.GameListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Reload,
+            this.AddEntry,
+            this.RemoveEntry});
+            this.GameListContextMenu.Name = "GameListContextMenu";
+            this.GameListContextMenu.Size = new System.Drawing.Size(232, 92);
+            // 
+            // Reload
+            // 
+            this.Reload.Name = "Reload";
+            this.Reload.Size = new System.Drawing.Size(231, 22);
+            this.Reload.Text = "Reload Game List";
+            this.Reload.Click += new System.EventHandler(this.Reload_Click);
+            // 
+            // AddEntry
+            // 
+            this.AddEntry.Name = "AddEntry";
+            this.AddEntry.Size = new System.Drawing.Size(231, 22);
+            this.AddEntry.Text = "Add Entry to Game List";
+            this.AddEntry.Click += new System.EventHandler(this.AddEntry_Click);
+            // 
+            // RemoveEntry
+            // 
+            this.RemoveEntry.Name = "RemoveEntry";
+            this.RemoveEntry.Size = new System.Drawing.Size(231, 22);
+            this.RemoveEntry.Text = "Remove Entry from Game List";
+            this.RemoveEntry.Click += new System.EventHandler(this.RemoveEntry_Click);
             // 
             // MainForm
             // 
@@ -254,6 +290,7 @@
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.GameListContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,6 +319,10 @@
         private System.Windows.Forms.ToolStripMenuItem removeEntryToolStripMenuItem;
         public System.Windows.Forms.ListView GameList;
         public System.Windows.Forms.ImageList GameListImages;
+        private System.Windows.Forms.ContextMenuStrip GameListContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem Reload;
+        private System.Windows.Forms.ToolStripMenuItem AddEntry;
+        private System.Windows.Forms.ToolStripMenuItem RemoveEntry;
     }
 }
 

@@ -198,10 +198,28 @@ namespace RyujinxAutoUpdate
             addGameForm.Show();
         }
 
+        private void AddEntry_Click(object sender, EventArgs e)
+        {
+            AddGameListEntry addGameForm = new AddGameListEntry();
+            addGameForm.Show();
+        }
+
         private void RemoveEntryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RemoveGameListEntry removeGameForm = new RemoveGameListEntry();
             removeGameForm.Show();
+        }
+
+        private void RemoveEntry_Click(object sender, EventArgs e)
+        {
+            RemoveGameListEntry removeGameForm = new RemoveGameListEntry();
+            removeGameForm.Show();
+        }
+
+        private void Reload_Click(object sender, EventArgs e)
+        {
+            ReloadIconSize();
+            ReloadGameList();
         }
 
         private void GameList_ItemActivate(object sender, EventArgs e)

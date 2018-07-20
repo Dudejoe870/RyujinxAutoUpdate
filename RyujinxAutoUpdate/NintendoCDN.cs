@@ -78,6 +78,8 @@ namespace RyujinxAutoUpdate
             hactool.Start();
             hactool.WaitForExit();
 
+            Thread.Sleep(300);
+
             File.Delete(ver);
 
             // Parse the CNMT to get the NCA ID
@@ -115,6 +117,8 @@ namespace RyujinxAutoUpdate
             hactool = Process.Start(startInfo);
             hactool.Start();
             hactool.WaitForExit();
+
+            Thread.Sleep(300);
 
             File.Delete("TempCont");
 

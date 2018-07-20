@@ -56,6 +56,22 @@ namespace RyujinxAutoUpdate
             return res;
         }
 
+        public static bool IsGameDirectoryValid(string dir)
+        {
+            bool hasRomFS = false;
+            bool hasNpdm  = false;
+
+            foreach (string s in Directory.GetFiles(dir))
+            {
+                if (hasRomFS && hasNpdm) break;
+                if (Path.GetExtension(s).ToUpper() == ".ROMFS" 
+                    || Path.GetExtension(s).ToUpper() == ".ISTORAGE")  hasRomFS = true;
+                if (Path.GetFileName(s).ToUpper()     == "MAIN.NPDM") hasNpdm = true;
+            }
+
+            return (hasRomFS && hasNpdm);
+        }
+
         public static GameListNACP ParseControlNacp(string Path)
         {
             GameListNACP res = new GameListNACP();
