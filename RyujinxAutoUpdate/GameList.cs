@@ -56,6 +56,31 @@ namespace RyujinxAutoUpdate
             return res;
         }
 
+        public static GameListNACP ParseControlNacp(string Path)
+        {
+            GameListNACP res = new GameListNACP();
+            byte[] NacpData = File.ReadAllBytes(Path);
+
+            string Name = "";
+            string Publisher = "";
+
+            int i = 0;
+            foreach (byte b in NacpData)
+            {
+                if (b != 0x00 && i < 0x200) Name += (char)b; // Get the Title Name
+
+                if (b != 0x00 && i >= 0x200 && i < 0x300) Publisher += (char)b; // Get the Publisher Name
+                if (i >= 0x300) break;
+
+                ++i;
+            }
+
+            res.TitleName = Name;
+            res.Publisher = Publisher;
+
+            return res;
+        }
+
         public static GameListMetaData ParseGameFiles(string FolderPath, string ControlNacpPath = null)
         {
             uint ACIoOff = 0;
@@ -74,24 +99,7 @@ namespace RyujinxAutoUpdate
 
             if (ControlNacpPath != null)
             {
-                byte[] NacpData = File.ReadAllBytes(ControlNacpPath);
-
-                string Name = "";
-                string Publisher = "";
-
-                int i = 0;
-                foreach (byte b in NacpData)
-                {
-                    if (b != 0x00 && i < 0x200)               Name      += (char)b; // Get the Title Name
-
-                    if (b != 0x00 && i >= 0x200 && i < 0x300) Publisher += (char)b; // Get the Publisher Name
-                    if (i >= 0x300) break;
-
-                    ++i;
-                }
-
-                ControlNacp.TitleName = Name;
-                ControlNacp.Publisher = Publisher;
+                ControlNacp = ParseControlNacp(ControlNacpPath);
             }
 
             return new GameListMetaData

@@ -40,6 +40,7 @@
             this.ThumbnailPath = new System.Windows.Forms.TextBox();
             this.Add = new System.Windows.Forms.Button();
             this.Thumbnail = new System.Windows.Forms.PictureBox();
+            this.GetMetadataCDN = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Thumbnail)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,11 +155,25 @@
             this.Thumbnail.TabIndex = 12;
             this.Thumbnail.TabStop = false;
             // 
+            // GetMetadataCDN
+            // 
+            this.GetMetadataCDN.Enabled = false;
+            this.GetMetadataCDN.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GetMetadataCDN.Location = new System.Drawing.Point(209, 108);
+            this.GetMetadataCDN.Name = "GetMetadataCDN";
+            this.GetMetadataCDN.Size = new System.Drawing.Size(156, 33);
+            this.GetMetadataCDN.TabIndex = 13;
+            this.GetMetadataCDN.Text = "Get Metadata from CDN";
+            this.GetMetadataCDN.UseVisualStyleBackColor = true;
+            this.GetMetadataCDN.Visible = false;
+            this.GetMetadataCDN.Click += new System.EventHandler(this.GetMetadataCDN_Click);
+            // 
             // AddGameListEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1159, 645);
+            this.Controls.Add(this.GetMetadataCDN);
             this.Controls.Add(this.Thumbnail);
             this.Controls.Add(this.Add);
             this.Controls.Add(this.ThumbnailPath);
@@ -194,5 +209,6 @@
         private System.Windows.Forms.TextBox ThumbnailPath;
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.PictureBox Thumbnail;
+        private System.Windows.Forms.Button GetMetadataCDN;
     }
 }

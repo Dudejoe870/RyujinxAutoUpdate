@@ -27,6 +27,7 @@ namespace RyujinxAutoUpdate
             WriteBuildLogCheck.Checked             = Settings.WRITE_BUILD_LOG;
             DefaultAppPath.Text                    = Settings.DEFAULT_HOMEBREW_APP;
             IconSize.Text                          = Settings.GAMELIST_ICON_SIZE;
+            GetMetadataCDN.Checked                 = Settings.GET_METADATA_FROM_CDN;
 
             if (branches == null)      branches      = GitParser.GitRemoteBranches(MainForm.RyujinxDownloadPath);
             if (currentBranch == null) currentBranch = GitParser.GitCurrentBranch (MainForm.RyujinxDownloadPath);
@@ -96,6 +97,35 @@ namespace RyujinxAutoUpdate
         {
             Settings.WRITE_BUILD_LOG      =  WriteBuildLogCheck.Checked;
             ShowBuildConsoleCheck.Enabled = !WriteBuildLogCheck.Checked;
+        }
+
+        private void GetMetadataCDN_CheckedChanged(object sender, EventArgs e)
+        {
+            if (GetMetadataCDN.Checked == true)
+            {
+                if (!File.Exists("keys.txt") && !File.Exists(NintendoCDN.CertPath))
+                {
+                    MessageBox.Show("keys.txt and " + NintendoCDN.CertPath + " are missing!", "Error");
+                    GetMetadataCDN.Checked = false;
+                    return;
+                }
+
+                if (!File.Exists(NintendoCDN.CertPath))
+                {
+                    MessageBox.Show(NintendoCDN.CertPath + " is missing!", "Error");
+                    GetMetadataCDN.Checked = false;
+                    return;
+                }
+
+                if (!File.Exists("keys.txt"))
+                {
+                    MessageBox.Show("keys.txt is missing!", "Error");
+                    GetMetadataCDN.Checked = false;
+                    return;
+                }
+            }
+
+            Settings.GET_METADATA_FROM_CDN = GetMetadataCDN.Checked;
         }
 
         private void GameListIconSize_SelectedIndexChanged(object sender, EventArgs e)

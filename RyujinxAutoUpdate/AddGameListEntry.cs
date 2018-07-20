@@ -27,6 +27,7 @@ namespace RyujinxAutoUpdate
         {
             this.Icon = new Icon("Images/main.ico");
             UpdateLock();
+            GetMetadataCDN.Visible = Settings.GET_METADATA_FROM_CDN;
             Meta = new GameList.GameListMetaData();
         }
 
@@ -123,6 +124,18 @@ namespace RyujinxAutoUpdate
             }
         }
 
+        private void GetMetadataCDN_Click(object sender, EventArgs e)
+        {
+            if (Meta.npdm.TitleID == null) Meta = GameList.ParseGameFiles(PathText.Text);
+            GameList.GameListNACP nacp = NintendoCDN.GetGameMetadata(Meta.npdm.TitleID);
+            GameName.Text = nacp.TitleName;
+            PublisherName.Text = nacp.Publisher;
+
+            Image image = Image.FromFile("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
+            Bitmap scaledImage = ResizeImage(image, 256, 256);
+            Thumbnail.Image = scaledImage;
+        }
+
         private void Add_Click(object sender, EventArgs e)
         {
             if (Meta.npdm.TitleID == null) Meta = RyujinxAutoUpdate.GameList.ParseGameFiles(PathText.Text);
@@ -151,6 +164,8 @@ namespace RyujinxAutoUpdate
             MainForm.ReloadGameList();
 
             Meta = new GameList.GameListMetaData();
+
+            this.Close();
         }
 
         private static Bitmap ResizeImage(Image image, int width, int height)
@@ -162,11 +177,11 @@ namespace RyujinxAutoUpdate
 
             using (var graphics = Graphics.FromImage(destImage))
             {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingMode    = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.InterpolationMode  = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode      = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode    = PixelOffsetMode.HighQuality;
 
                 using (var wrapMode = new ImageAttributes())
                 {
@@ -198,6 +213,7 @@ namespace RyujinxAutoUpdate
             SelectThumbnail.Enabled = isUnlocked;
             ThumbnailPath.Enabled   = isUnlocked;
             Add.Enabled             = isUnlocked;
+            GetMetadataCDN.Enabled  = isUnlocked;
         }
     }
 }

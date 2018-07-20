@@ -13,6 +13,7 @@ namespace RyujinxAutoUpdate
         public static bool   WRITE_RYUJINX_LOG;
         public static bool   SHOW_BUILD_CONSOLE;
         public static bool   WRITE_BUILD_LOG;
+        public static bool   GET_METADATA_FROM_CDN;
         public static string DEFAULT_HOMEBREW_APP;
         public static string GAMELIST_ICON_SIZE;
 
@@ -30,6 +31,7 @@ namespace RyujinxAutoUpdate
             WRITE_RYUJINX_LOG            = bool.Parse(SettingsData.Global.GetKeyData("WriteRyujinxLog")          .Value);
             SHOW_BUILD_CONSOLE           = bool.Parse(SettingsData.Global.GetKeyData("ShowBuildConsole")         .Value);
             WRITE_BUILD_LOG              = bool.Parse(SettingsData.Global.GetKeyData("WriteBuildLog")            .Value);
+            GET_METADATA_FROM_CDN        = bool.Parse(SettingsData.Global.GetKeyData("GetMetadataCDN")           .Value);
             DEFAULT_HOMEBREW_APP         =            SettingsData.Global.GetKeyData("DefaultHomebrewPath")      .Value;
             GAMELIST_ICON_SIZE           =            SettingsData.Global.GetKeyData("GameListIconSize")         .Value;
         }
@@ -59,6 +61,11 @@ namespace RyujinxAutoUpdate
             SettingsData.Global.SetKeyData(new KeyData("WriteBuildLog")
             {
                 Value = WRITE_BUILD_LOG.ToString()
+            });
+
+            SettingsData.Global.SetKeyData(new KeyData("GetMetadataCDN")
+            {
+                Value = GET_METADATA_FROM_CDN.ToString()
             });
 
             SettingsData.Global.SetKeyData(new KeyData("DefaultHomebrewPath")

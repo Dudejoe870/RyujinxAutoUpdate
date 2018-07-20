@@ -54,6 +54,9 @@
             this.IconSize = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.GetMetadataCDN = new System.Windows.Forms.CheckBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Cancel
@@ -344,12 +347,51 @@
             this.label11.TabIndex = 25;
             this.label11.Text = "Game List Icon Size:";
             // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(622, 207);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(172, 21);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Nintendo CDN Settings";
+            // 
+            // GetMetadataCDN
+            // 
+            this.GetMetadataCDN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.GetMetadataCDN.AutoSize = true;
+            this.GetMetadataCDN.Location = new System.Drawing.Point(626, 231);
+            this.GetMetadataCDN.Name = "GetMetadataCDN";
+            this.GetMetadataCDN.Size = new System.Drawing.Size(361, 17);
+            this.GetMetadataCDN.TabIndex = 27;
+            this.GetMetadataCDN.Text = "Use a Certificate and Keys to automatically pull Metadata from the CDN";
+            this.GetMetadataCDN.UseVisualStyleBackColor = true;
+            this.GetMetadataCDN.CheckedChanged += new System.EventHandler(this.GetMetadataCDN_CheckedChanged);
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Segoe UI", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(509, 251);
+            this.label13.Name = "label13";
+            this.label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label13.Size = new System.Drawing.Size(523, 13);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Warning: We are not responsible for Nintendo banning any Certificates for the use" +
+    " of this Function.";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1037, 549);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.GetMetadataCDN);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.IconSize);
@@ -412,5 +454,8 @@
         private System.Windows.Forms.ComboBox IconSize;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox GetMetadataCDN;
+        private System.Windows.Forms.Label label13;
     }
 }
