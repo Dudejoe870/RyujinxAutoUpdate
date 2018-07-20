@@ -60,12 +60,12 @@ namespace RyujinxAutoUpdate
             {
                 ParseMetaNCAID = (HttpWebResponse)GetMetaNCAID.GetResponse();
             }
-            catch (WebException e)
+            catch (WebException we)
             {
-                int statusCode = (int)((HttpWebResponse)GetMetaNCAID.GetResponse()).StatusCode;
+                HttpStatusCode statusCode = ((HttpWebResponse)we.Response).StatusCode;
 
-                if (statusCode == 404) return new GameList.GameListNACP(); // If it's not found on the CDN then just return null values.
-                else throw e; // If it's not that then just throw the exception.
+                if (statusCode == HttpStatusCode.NotFound) return new GameList.GameListNACP(); // If it's not found on the CDN then just return null values.
+                else throw we; // Else just throw the Exception.
             }
 
             ParseMetaNCAID.Close();
