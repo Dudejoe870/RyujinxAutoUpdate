@@ -49,11 +49,13 @@
             this.HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameList = new System.Windows.Forms.ListView();
-            this.GameListImages = new System.Windows.Forms.ImageList(this.components);
             this.GameListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Reload = new System.Windows.Forms.ToolStripMenuItem();
             this.AddEntry = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.GameListImages = new System.Windows.Forms.ImageList(this.components);
+            this.SearchBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.GameListContextMenu.SuspendLayout();
@@ -224,21 +226,15 @@
             this.GameList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GameList.ContextMenuStrip = this.GameListContextMenu;
             this.GameList.LargeImageList = this.GameListImages;
-            this.GameList.Location = new System.Drawing.Point(0, 27);
+            this.GameList.Location = new System.Drawing.Point(0, 56);
             this.GameList.MultiSelect = false;
             this.GameList.Name = "GameList";
-            this.GameList.Size = new System.Drawing.Size(1264, 626);
+            this.GameList.Size = new System.Drawing.Size(1264, 597);
             this.GameList.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.GameList.TabIndex = 0;
             this.GameList.TabStop = false;
             this.GameList.UseCompatibleStateImageBehavior = false;
             this.GameList.ItemActivate += new System.EventHandler(this.GameList_ItemActivate);
-            // 
-            // GameListImages
-            // 
-            this.GameListImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
-            this.GameListImages.ImageSize = new System.Drawing.Size(192, 192);
-            this.GameListImages.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // GameListContextMenu
             // 
@@ -247,7 +243,7 @@
             this.AddEntry,
             this.RemoveEntry});
             this.GameListContextMenu.Name = "GameListContextMenu";
-            this.GameListContextMenu.Size = new System.Drawing.Size(232, 92);
+            this.GameListContextMenu.Size = new System.Drawing.Size(232, 70);
             // 
             // Reload
             // 
@@ -270,6 +266,31 @@
             this.RemoveEntry.Text = "Remove Entry from Game List";
             this.RemoveEntry.Click += new System.EventHandler(this.RemoveEntry_Click);
             // 
+            // GameListImages
+            // 
+            this.GameListImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
+            this.GameListImages.ImageSize = new System.Drawing.Size(192, 192);
+            this.GameListImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // SearchBox
+            // 
+            this.SearchBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchBox.Location = new System.Drawing.Point(91, 29);
+            this.SearchBox.Name = "SearchBox";
+            this.SearchBox.Size = new System.Drawing.Size(404, 23);
+            this.SearchBox.TabIndex = 2;
+            this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 25);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Search:";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -277,6 +298,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.GameList);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -323,6 +346,8 @@
         private System.Windows.Forms.ToolStripMenuItem Reload;
         private System.Windows.Forms.ToolStripMenuItem AddEntry;
         private System.Windows.Forms.ToolStripMenuItem RemoveEntry;
+        private System.Windows.Forms.TextBox SearchBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -222,12 +223,32 @@ namespace RyujinxAutoUpdate
             ReloadGameList();
         }
 
+        private ListViewItem[] SearchItemsToRemove(string text)
+        {
+            ReloadGameList();
+
+            List<ListViewItem> ResList = new List<ListViewItem>();
+
+            foreach (ListViewItem item in GameList.Items)
+                if (!item.Text.ToUpper().Contains(text.ToUpper())) ResList.Add(item);
+
+            return ResList.ToArray();
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            ListViewItem[] Results = SearchItemsToRemove(SearchBox.Text);
+
+            if (Results.Length != 0)
+                foreach (ListViewItem item in Results) GameList.Items.Remove(item);
+        }
+
         private void GameList_ItemActivate(object sender, EventArgs e)
         {
             string TitleID = (string)((ListView)sender).SelectedItems[0].Tag;
-            RyujinxAutoUpdate.GameList.GameListEntry Game = new RyujinxAutoUpdate.GameList.GameListEntry();
+            GameList.GameListEntry Game = new RyujinxAutoUpdate.GameList.GameListEntry();
 
-            foreach (RyujinxAutoUpdate.GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games)
+            foreach (GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games)
             {
                 if (entry.TitleID == TitleID)
                 {
