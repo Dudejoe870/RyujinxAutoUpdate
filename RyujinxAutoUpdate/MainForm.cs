@@ -60,7 +60,7 @@ namespace RyujinxAutoUpdate
             Instance.GameList.Clear();
             Instance.GameListImages.Images.Clear();
 
-            foreach (RyujinxAutoUpdate.GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games) 
+            foreach (GameList.GameListEntry entry in RyujinxAutoUpdate.GameList.Games) 
             {
                 if (File.Exists("./Images/GameThumbnails/" + entry.TitleID + ".jpg"))
                     Instance.GameListImages.Images.Add(entry.TitleID, Image.FromFile("./Images/GameThumbnails/" + entry.TitleID + ".jpg"));

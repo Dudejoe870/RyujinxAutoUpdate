@@ -37,19 +37,20 @@ namespace RyujinxAutoUpdate
             {
                 JObject JSON = JObject.Parse(Response.Headers.Get("X-GCN-Game-Meta"));
                 Response.Dispose();
-                return new GameHeader()
+
+                return new GameHeader
                 {
                     Return    = ReturnType.Success,
                     GameName  = JSON["applications"][0]["name"].ToString(),
-                    Publisher = JSON["publisher"]["name"].ToString()
+                    Publisher = (JSON.ContainsKey("publisher")) ? JSON["publisher"]["name"].ToString() : ""
                 };
             }
             else
             {
                 switch (Response.Headers.Get("X-GCN-Failure"))
                 {
-                    case "MISSING_TITLE": Response.Dispose(); return new GameHeader() { Return = ReturnType.MissingTitle, GameName = null, Publisher = null };
-                    case "INVALID_TITLE": Response.Dispose(); return new GameHeader() { Return = ReturnType.InvalidTitle, GameName = null, Publisher = null };
+                    case "MISSING_TITLE": Response.Dispose(); return new GameHeader { Return = ReturnType.MissingTitle, GameName = null, Publisher = null };
+                    case "INVALID_TITLE": Response.Dispose(); return new GameHeader { Return = ReturnType.InvalidTitle, GameName = null, Publisher = null };
                     default: throw new NotImplementedException();
                 }
             }
