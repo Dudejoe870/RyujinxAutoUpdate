@@ -29,9 +29,10 @@ namespace RyujinxAutoUpdate
             this.Icon = new Icon("Images/main.ico");
             UpdateLock();
             GetMetadataCDN.Visible = Settings.GET_METADATA_FROM_CDN;
-            ScanDir.Visible        = Settings.GET_METADATA_FROM_CDN;
-            ScanState.Text         = "";
-            Meta                   = new GameList.GameListMetaData();
+            ScanDir.Visible = Settings.GET_METADATA_FROM_CDN || Settings.USE_NUCLEUS;
+            GetMetadataNucleus.Visible = Settings.USE_NUCLEUS;
+            ScanState.Text = "";
+            Meta = new GameList.GameListMetaData();
         }
 
         private void SelectGamePath_Click(object sender, EventArgs e)
@@ -91,7 +92,7 @@ namespace RyujinxAutoUpdate
                 {
                     ThumbnailPath.Text = fileDialog.FileName;
 
-                    Image image = System.Drawing.Image.FromFile(ThumbnailPath.Text);
+                    Image image = Image.FromFile(ThumbnailPath.Text);
                     Bitmap scaledImage = ResizeImage(image, 256, 256);
                     Thumbnail.Image = scaledImage;
                 }
@@ -123,7 +124,7 @@ namespace RyujinxAutoUpdate
             {
                 ContentNacpPath.Text = fileDialog.FileName;
 
-                Meta = RyujinxAutoUpdate.GameList.ParseGameFiles(PathText.Text, ContentNacpPath.Text);
+                Meta = GameList.ParseGameFiles(PathText.Text, ContentNacpPath.Text);
 
                 if (!String.IsNullOrWhiteSpace(Meta.nacp.TitleName)) GameName.Text      = Meta.nacp.TitleName;
                 if (!String.IsNullOrWhiteSpace(Meta.nacp.Publisher)) PublisherName.Text = Meta.nacp.Publisher;
@@ -134,6 +135,31 @@ namespace RyujinxAutoUpdate
             {
                 fileDialog.Dispose();
                 return;
+            }
+        }
+
+        private void GetMetadataNucleus_Click(object sender, EventArgs e)
+        {
+            if (Meta.npdm.TitleID == null) Meta = GameList.ParseGameFiles(PathText.Text);
+            NucleusCDN.GameHeader header = NucleusCDN.MakeHeadRequest(Meta.npdm.TitleID);
+            if (header.Return == NucleusCDN.ReturnType.Success)
+            {
+                GameName.Text      = header.GameName;
+                PublisherName.Text = header.Publisher;
+
+                if (!File.Exists("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg"))
+                    File.WriteAllBytes("./Images/GameThumbnails/"       + Meta.npdm.TitleID + ".jpg", NucleusCDN.MakeIconRequest(Meta.npdm.TitleID));
+                Image image = Image.FromFile("./Images/GameThumbnails/" + Meta.npdm.TitleID + ".jpg");
+                Bitmap scaledImage = ResizeImage(image, 256, 256);
+                Thumbnail.Image = scaledImage;
+            }
+            else
+            {
+                switch (header.Return)
+                {
+                    case NucleusCDN.ReturnType.MissingTitle: MessageBox.Show("This title doesn't exist on the Nucleus CDN."); return;
+                    case NucleusCDN.ReturnType.InvalidTitle: MessageBox.Show("This TitleID is invalid.");                     return;
+                }
             }
         }
 
@@ -152,38 +178,79 @@ namespace RyujinxAutoUpdate
 
         private void ScanDir_Click(object sender, EventArgs e)
         {
-            entrysfound = new List<GameList.GameListEntry>();
-            int foundgames = 0;
-            int skippedgames = 0;
-
-            foreach (string dir in Directory.GetDirectories(PathText.Text))
+            if (Settings.GET_METADATA_FROM_CDN)
             {
-                if (GameList.IsGameDirectoryValid(dir))
+                entrysfound = new List<GameList.GameListEntry>();
+                int foundgames = 0;
+                int skippedgames = 0;
+
+                foreach (string dir in Directory.GetDirectories(PathText.Text))
                 {
-                    ScanState.Text = "Games found: " + foundgames + "\nSkipped Games (Aka Games not found on the CDN): " + skippedgames + "\n(This process may take a while)";
-                    GameList.GameListMetaData metaData = GameList.ParseGameFiles(dir);
-                    metaData.nacp = NintendoCDN.GetGameMetadata(metaData.npdm.TitleID);
-
-                    if (metaData.nacp.TitleName == null)
+                    if (GameList.IsGameDirectoryValid(dir))
                     {
-                        ++skippedgames;
-                        continue;
+                        ScanState.Text = "Games found: " + foundgames + "\nSkipped Games (Aka Games not found on the CDN): " + skippedgames + "\n(This process may take a while)";
+                        GameList.GameListMetaData metaData = GameList.ParseGameFiles(dir);
+                        metaData.nacp = NintendoCDN.GetGameMetadata(metaData.npdm.TitleID);
+
+                        if (metaData.nacp.TitleName == null)
+                        {
+                            ++skippedgames;
+                            continue;
+                        }
+
+                        entrysfound.Add(new GameList.GameListEntry
+                        {
+                            AppName   = metaData.nacp.TitleName,
+                            Publisher = metaData.nacp.Publisher,
+                            TitleID   = metaData.npdm.TitleID,
+                            GamePath  = dir
+                        });
+
+                        ++foundgames;
                     }
-
-                    GameList.GameListEntry entry = new GameList.GameListEntry
-                    {
-                        AppName = metaData.nacp.TitleName,
-                        Publisher = metaData.nacp.Publisher,
-                        TitleID   = metaData.npdm.TitleID,
-                        GamePath  = dir
-                    };
-
-                    entrysfound.Add(entry);
-                    ++foundgames;
                 }
-            }
 
-            ScanState.Text = "All Games found: " + foundgames + "\nAll Games Skipped: " + skippedgames;
+                ScanState.Text = "All Games found: " + foundgames + "\nAll Games Skipped: " + skippedgames;
+            }
+            else if (Settings.USE_NUCLEUS)
+            {
+                entrysfound = new List<GameList.GameListEntry>();
+                int foundgames = 0;
+                int skippedgames = 0;
+
+                foreach (string dir in Directory.GetDirectories(PathText.Text))
+                {
+                    if (GameList.IsGameDirectoryValid(dir))
+                    {
+                        ScanState.Text = "Games found: " + foundgames + "\nSkipped Games (Aka Games not found on the CDN): " + skippedgames + "\n(This process may take a while)";
+                        GameList.GameListMetaData metaData = GameList.ParseGameFiles(dir);
+                        NucleusCDN.GameHeader header = NucleusCDN.MakeHeadRequest(metaData.npdm.TitleID);
+
+                        if (header.Return == NucleusCDN.ReturnType.Success)
+                        {
+                            if (!File.Exists("./Images/GameThumbnails/" + metaData.npdm.TitleID + ".jpg"))
+                                File.WriteAllBytes("./Images/GameThumbnails/" + metaData.npdm.TitleID + ".jpg", NucleusCDN.MakeIconRequest(metaData.npdm.TitleID));
+
+                            entrysfound.Add(new GameList.GameListEntry
+                            {
+                                AppName   = header.GameName,
+                                Publisher = header.Publisher,
+                                TitleID   = metaData.npdm.TitleID,
+                                GamePath  = dir
+                            });
+
+                            ++foundgames;
+                        }
+                        else
+                        {
+                            ++skippedgames;
+                            continue;
+                        }
+                    }
+                }
+
+                ScanState.Text = "All Games found: " + foundgames + "\nAll Games Skipped: " + skippedgames;
+            }
         }
 
         private void Add_Click(object sender, EventArgs e)
@@ -207,16 +274,16 @@ namespace RyujinxAutoUpdate
 
                 GameList.GameListEntry entry = new GameList.GameListEntry();
 
-                if (String.IsNullOrWhiteSpace(GameName.Text) || String.IsNullOrWhiteSpace(PublisherName.Text))
+                if (String.IsNullOrWhiteSpace(GameName.Text))
                 {
-                    MessageBox.Show("Please fill in the Game Name and or the Publisher Name.", "Error");
+                    MessageBox.Show("Please fill in the at least Game Name.", "Error");
                     return;
                 }
 
-                entry.AppName = GameName.Text;
+                entry.AppName   = GameName.Text;
                 entry.Publisher = PublisherName.Text;
-                entry.GamePath = PathText.Text;
-                entry.TitleID = Meta.npdm.TitleID;
+                entry.GamePath  = PathText.Text;
+                entry.TitleID   = Meta.npdm.TitleID;
 
                 GameList.AddGameListEntry(entry);
                 MainForm.ReloadGameList();
@@ -265,13 +332,14 @@ namespace RyujinxAutoUpdate
 
         private void UpdateLock()
         {
-            SelectNacpPath.Enabled  = isUnlocked;
-            ContentNacpPath.Enabled = isUnlocked;
-            GameName.Enabled        = isUnlocked;
-            PublisherName.Enabled   = isUnlocked;
-            SelectThumbnail.Enabled = isUnlocked;
-            ThumbnailPath.Enabled   = isUnlocked;
-            GetMetadataCDN.Enabled  = isUnlocked;
+            SelectNacpPath.Enabled     = isUnlocked;
+            ContentNacpPath.Enabled    = isUnlocked;
+            GameName.Enabled           = isUnlocked;
+            PublisherName.Enabled      = isUnlocked;
+            SelectThumbnail.Enabled    = isUnlocked;
+            ThumbnailPath.Enabled      = isUnlocked;
+            GetMetadataCDN.Enabled     = isUnlocked;
+            GetMetadataNucleus.Enabled = isUnlocked;
         }
     }
 }

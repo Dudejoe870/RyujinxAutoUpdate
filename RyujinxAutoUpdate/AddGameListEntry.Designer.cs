@@ -43,6 +43,7 @@
             this.GetMetadataCDN = new System.Windows.Forms.Button();
             this.ScanDir = new System.Windows.Forms.Button();
             this.ScanState = new System.Windows.Forms.Label();
+            this.GetMetadataNucleus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Thumbnail)).BeginInit();
             this.SuspendLayout();
             // 
@@ -161,11 +162,11 @@
             // 
             this.GetMetadataCDN.Enabled = false;
             this.GetMetadataCDN.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GetMetadataCDN.Location = new System.Drawing.Point(209, 108);
+            this.GetMetadataCDN.Location = new System.Drawing.Point(209, 106);
             this.GetMetadataCDN.Name = "GetMetadataCDN";
-            this.GetMetadataCDN.Size = new System.Drawing.Size(156, 33);
+            this.GetMetadataCDN.Size = new System.Drawing.Size(156, 44);
             this.GetMetadataCDN.TabIndex = 13;
-            this.GetMetadataCDN.Text = "Get Metadata from CDN";
+            this.GetMetadataCDN.Text = "Get Metadata from Nintendo CDN";
             this.GetMetadataCDN.UseVisualStyleBackColor = true;
             this.GetMetadataCDN.Visible = false;
             this.GetMetadataCDN.Click += new System.EventHandler(this.GetMetadataCDN_Click);
@@ -193,11 +194,25 @@
             this.ScanState.TabIndex = 15;
             this.ScanState.Text = "SCAN_STATE";
             // 
+            // GetMetadataNucleus
+            // 
+            this.GetMetadataNucleus.Enabled = false;
+            this.GetMetadataNucleus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GetMetadataNucleus.Location = new System.Drawing.Point(235, 192);
+            this.GetMetadataNucleus.Name = "GetMetadataNucleus";
+            this.GetMetadataNucleus.Size = new System.Drawing.Size(156, 44);
+            this.GetMetadataNucleus.TabIndex = 16;
+            this.GetMetadataNucleus.Text = "Get Metadata from Nucleus CDN";
+            this.GetMetadataNucleus.UseVisualStyleBackColor = true;
+            this.GetMetadataNucleus.Visible = false;
+            this.GetMetadataNucleus.Click += new System.EventHandler(this.GetMetadataNucleus_Click);
+            // 
             // AddGameListEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1159, 645);
+            this.Controls.Add(this.GetMetadataNucleus);
             this.Controls.Add(this.ScanState);
             this.Controls.Add(this.ScanDir);
             this.Controls.Add(this.GetMetadataCDN);
@@ -239,5 +254,6 @@
         private System.Windows.Forms.Button GetMetadataCDN;
         private System.Windows.Forms.Button ScanDir;
         private System.Windows.Forms.Label ScanState;
+        private System.Windows.Forms.Button GetMetadataNucleus;
     }
 }

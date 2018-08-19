@@ -57,6 +57,9 @@
             this.label12 = new System.Windows.Forms.Label();
             this.GetMetadataCDN = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.UseNucleus = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Cancel
@@ -383,12 +386,50 @@
             this.label13.Text = "Warning: We are not responsible for Nintendo banning any Certificates for the use" +
     " of this Function.";
             // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(343, 275);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(682, 13);
+            this.label15.TabIndex = 30;
+            this.label15.Text = "This is not recommended to be used anymore, use Nucleus instead, only use this in" +
+    " the case that Nucleus doesn\'t have your game";
+            // 
+            // UseNucleus
+            // 
+            this.UseNucleus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.UseNucleus.AutoSize = true;
+            this.UseNucleus.Location = new System.Drawing.Point(626, 329);
+            this.UseNucleus.Name = "UseNucleus";
+            this.UseNucleus.Size = new System.Drawing.Size(329, 17);
+            this.UseNucleus.TabIndex = 31;
+            this.UseNucleus.Text = "Use Nucleus to get Metadata like the Title Name and Thumbnail";
+            this.UseNucleus.UseVisualStyleBackColor = true;
+            this.UseNucleus.CheckedChanged += new System.EventHandler(this.UseNucleus_CheckedChanged);
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(622, 305);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(163, 21);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Nucleus CDN Settings";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1037, 549);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.UseNucleus);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.GetMetadataCDN);
             this.Controls.Add(this.label12);
@@ -457,5 +498,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox GetMetadataCDN;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.CheckBox UseNucleus;
+        private System.Windows.Forms.Label label14;
     }
 }
