@@ -1,5 +1,7 @@
-# Ryujinx Auto Updater [![Build status](https://ci.appveyor.com/api/projects/status/otnw26su71adq4j1?svg=true)](https://ci.appveyor.com/project/Dudejoe870/ryujinxautoupdate)
+# This Repository is archived
+I archived this repository because no one else really has an interest in working on it, and I don't plan to continue, you can still use this but it is not guaranteed to work at all, especially with new versions of Ryujinx.  Sorry for the inconvenience, if anyone wants to continue this project, you can go ahead and fork it, other than that, this is the end of this application.  Consider looking at some of my other projects like [Ryu64 The Nintendo64 Emulator](https://github.com/Ryu64Emulator/Ryu64) (Named after the RyuJIT used in C#).  Have a nice day everyone!
 
+# Ryujinx Auto Updater [![Build status](https://ci.appveyor.com/api/projects/status/otnw26su71adq4j1?svg=true)](https://ci.appveyor.com/project/Dudejoe870/ryujinxautoupdate)
 ## Introduction
 This is a program for updating, and launching the Switch emulator Ryujinx
 ## How To Build
